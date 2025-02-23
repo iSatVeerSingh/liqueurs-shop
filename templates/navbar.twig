@@ -17,14 +17,18 @@
 							{% for category, bottles in navbarData.spirits %}
 								<li class="dropend">
 									<button class="dropdown-item dropdown-toggle sub-dropdown-btn py-2">
-										{{ category }}
+										{{ category|upper }}
 									</button>
 									<ul class="dropdown-menu">
+										<div class="px-3 fs-5 dropend-title border-bottom">Featured Brands</div>
 										{% for bottle in bottles %}
 											<li>
-												<a class="dropdown-item" href="#">{{ bottle }}</a>
+												<a class="dropdown-item" href="/liqueurs?bottle={{ bottle }}">{{ bottle }}</a>
 											</li>
 										{% endfor %}
+										<div class="dropend-title border-top">
+											<a href="/liqueurs?categories={{ category }}" class="dropdown-item">See all brands</a>
+										</div>
 									</ul>
 								</li>
 							{% endfor %}
@@ -37,7 +41,7 @@
 						<ul class="dropdown-menu">
 							{% for distiller in navbarData.distillers %}
 								<li>
-									<a class="dropdown-item" href="#">{{ distiller }}</a>
+									<a class="dropdown-item" href="/liqueurs?distiller={{ distiller }}">{{ distiller }}</a>
 								</li>
 							{% endfor %}
 						</ul>
@@ -49,20 +53,20 @@
 						<ul class="dropdown-menu">
 							{% for region in navbarData.regions %}
 								<li>
-									<a class="dropdown-item" href="#">{{ region }}</a>
+									<a class="dropdown-item" href="/liqueurs?region={{ region }}">{{ region }}</a>
 								</li>
 							{% endfor %}
 						</ul>
 					</li>
 					<li class="nav-item">
-						<button class="nav-link" type="button" aria-expanded="false">
+						<a class="nav-link" href="/liqueurs?categories=Whiskey" type="button" aria-expanded="false">
 							TRENDING
-						</button>
+						</a>
 					</li>
 					<li class="nav-item">
-						<button class="nav-link" type="button" aria-expanded="false">
+						<a class="nav-link" href="/contact" type="button" aria-expanded="false">
 							GIFTS
-						</button>
+						</a>
 					</li>
 				</ul>
 				<form class="d-flex" id="navbar-form">

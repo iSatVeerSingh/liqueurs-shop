@@ -6,6 +6,7 @@ const subDropdownButtons = document.querySelectorAll(".sub-dropdown-btn");
 
 // Store dropdown instances
 const dropdownInstances = new Map();
+const subDropdownInstances = new Map();
 
 // Initialize all main dropdowns
 dropdownButtons.forEach((button) => {
@@ -29,25 +30,40 @@ dropdownButtons.forEach((button) => {
 
 // Handle nested dropdowns separately
 subDropdownButtons.forEach((button) => {
+  const subDropdown = new bootstrap.Dropdown(button);
+  subDropdownInstances.set(button, subDropdown);
+
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
-    // Prevent parent dropdown from closing
-    event.stopPropagation();
-
-    // Toggle the nested dropdown manually
-    let nestedMenu = button.nextElementSibling;
-    if (nestedMenu) {
-      let isOpen = nestedMenu.classList.contains("show");
-      document
-        .querySelectorAll(".dropdown-menu .dropdown-menu")
-        .forEach((menu) => menu.classList.remove("show"));
-
-      if (!isOpen) {
-        nestedMenu.classList.add("show");
+    subDropdownInstances.forEach((instance, btn) => {
+      if (btn !== button) {
+        instance.hide();
       }
-    }
+    });
+
+    subDropdown.toggle();
   });
+
+  // button.addEventListener("click", (event) => {
+  //   event.preventDefault();
+
+  //   // Prevent parent dropdown from closing
+  //   event.stopPropagation();
+
+  //   // Toggle the nested dropdown manually
+  //   let nestedMenu = button.nextElementSibling;
+  //   if (nestedMenu) {
+  //     let isOpen = nestedMenu.classList.contains("show");
+  //     document
+  //       .querySelectorAll(".dropdown-menu .dropdown-menu")
+  //       .forEach((menu) => menu.classList.remove("show"));
+
+  //     if (!isOpen) {
+  //       nestedMenu.classList.add("show");
+  //     }
+  //   }
+  // });
 });
 
 // Close dropdowns when clicking outside
@@ -102,4 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
       searchInput.value = bottleParam;
     }
   }
+
+  console.log(bootstrap);
 });

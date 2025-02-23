@@ -1,9 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 :root {
   --color-eggplant: #281e36;
   --color-cream: #da5f36;
-  --color-rust: #7e341b;
+  --color-rust: #82673f;
   --color-smoke: #857473;
   --color-black: #000000;
+}
+
+body {
+  font-family: "Roboto", serif;
 }
 
 .navbar-brand img {
@@ -16,10 +22,27 @@
   color: white !important;
 }
 
+.nav-item .nav-link:hover {
+  color: var(--color-rust) !important;
+}
+
 .dropdown-menu .dropdown-menu {
   left: 100%;
   top: 0;
   margin-top: -1px;
+}
+
+.sub-dropdown-btn:hover {
+  color: var(--color-rust) !important;
+}
+
+.dropdown-toggle.show {
+  color: var(--color-rust) !important;
+}
+
+.dropend-title {
+  color: var(--color-eggplant);
+  /* border-bottom: 1px solid var(--color-smoke); */
 }
 
 .accordion-item {

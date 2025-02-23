@@ -60,6 +60,12 @@ $app->get('/liqueurs/{id}', function (Request $request, Response $response, $arg
   return $response->withHeader('Content-Type', 'application/json');
 });
 
+$app->get('/contact', function ($request, $response, $args) use ($twig) {
+  $navbarData = getNavbarData();
+
+  return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
+});
+
 $app->get('/api', function (Request $request, Response $response, $args) {
   // Retrieve query parameters and set up pagination
   $params = $request->getQueryParams();
@@ -67,12 +73,6 @@ $app->get('/api', function (Request $request, Response $response, $args) {
 
   $response->getBody()->write(json_encode($payload));
   return $response->withHeader('Content-Type', 'application/json');
-});
-
-$app->get('/contact', function ($request, $response, $args) use ($twig) {
-  $navbarData = getNavbarData();
-
-  return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
 });
 
 
