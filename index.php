@@ -70,6 +70,12 @@ $app->get('/api/{id}', function (Request $request, Response $response, $args) us
   return $response->withHeader('Content-Type', 'application/json');
 });
 
+$app->get('/contact', function ($request, $response, $args) use ($twig) {
+  $navbarData = getNavbarData();
+
+  return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
+});
+
 
 
 // Run the app
