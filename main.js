@@ -94,12 +94,13 @@ function renderProducts(responseData) {
     col.innerHTML = `
       <div class="card product-card shadow-sm mb-4 p-3">
         <div class="position-relative">
-          <img src="${item.image}" class="card-img-top" alt="${item.bottle}" />
+          <img src="${item.image}" class="" alt="${item.bottle}" />
           <a href="/liqueurs/${item.id}" class="stretched-link"></a>
         </div>
         <div class="card-body">
           <h5 class="card-title mb-2">${item.bottle}</h5>
           <p class="text-danger fw-bold fs-5 mb-2">${item.value}</p>
+          <p class="mb-2"><span class="fw-bold fs-6">${item.price_1_oz}</span><small class="text-muted"> per oz</small></p>
           <p class="mb-1 text-muted">
             <small>${item.distiller} &bull; ${item.type} &bull; ${item.region}</small>
           </p>
