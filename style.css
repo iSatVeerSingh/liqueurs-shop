@@ -39,6 +39,7 @@
 }
 
 .product-card {
+  border-radius: 0 !important;
   min-height: 320px;
 }
 
@@ -48,3 +49,21 @@
   display: block;
   margin: auto;
 }
+
+.pagination .page-item .page-link {
+  color: gray;
+  border-radius: 0 !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: transparent;
+  color: lightgray;
+  border-color: lightgray;
+}
+

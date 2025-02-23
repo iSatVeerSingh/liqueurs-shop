@@ -29,7 +29,14 @@ $app->get('/search', function ($request, $response, $args) use ($twig) {
   return $twig->render($response, 'search.twig', ['navbarData' => $navbarData, 'sidebarData' => $categoriesAndTypes]);
 });
 
-$app->get('/api/liqueurs', function (Request $request, Response $response, $args) {
+$app->get('/liqueurs', function ($request, $response, $args) use ($twig) {
+  $navbarData = getNavbarData();
+  $categoriesAndTypes = getUniqueCategoriesAndTypes();
+
+  return $twig->render($response, 'liqueurs.twig', ['navbarData' => $navbarData, 'sidebarData' => $categoriesAndTypes]);
+});
+
+$app->get('/api', function (Request $request, Response $response, $args) {
   // Retrieve query parameters and set up pagination
   $params = $request->getQueryParams();
   $payload = getFilteredLiqueurs($params);
