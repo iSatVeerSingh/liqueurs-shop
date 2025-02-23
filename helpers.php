@@ -74,12 +74,12 @@ function getFilteredLiqueurs($params)
     $price = trim($params['price']);
     if (strpos($price, '-') !== false) {
       list($min, $max) = explode('-', $price);
-      $query .= " AND CAST(REPLACE(price_1_oz, '$', '') AS REAL) BETWEEN :price_min AND :price_max";
+      $query .= " AND CAST(REPLACE(value, '$', '') AS REAL) BETWEEN :price_min AND :price_max";
       $bindings[':price_min'] = (float)$min;
       $bindings[':price_max'] = (float)$max;
     } elseif (substr($price, -1) === '+') {
       $min = rtrim($price, '+');
-      $query .= " AND CAST(REPLACE(price_1_oz, '$', '') AS REAL) >= :price_min";
+      $query .= " AND CAST(REPLACE(value, '$', '') AS REAL) >= :price_min";
       $bindings[':price_min'] = (float)$min;
     }
   }

@@ -92,7 +92,7 @@ function renderProducts(responseData) {
     const col = document.createElement("div");
     col.className = "col";
     col.innerHTML = `
-      <div class="card product-card shadow-sm mb-4">
+      <div class="card product-card shadow-sm mb-4 p-3">
         <div class="position-relative">
           <img src="${item.image}" class="card-img-top" alt="${item.bottle}" />
           <a href="/liqueurs/${item.id}" class="stretched-link"></a>
