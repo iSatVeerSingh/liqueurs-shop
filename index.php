@@ -45,9 +45,30 @@ $app->get('/api', function (Request $request, Response $response, $args) {
   return $response->withHeader('Content-Type', 'application/json');
 });
 
-// $app->get('/ui-data', function (Request $request, Response $response, $args) {
+$app->get('/api/{id}', function (Request $request, Response $response, $args) use ($twig) {
+  $id = (int)$args['id'];
+  $navbarData = getNavbarData();
+  // Connect to SQLite
+  $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// });
+  // Fetch the liqueur by id
+  $stmt = $db->prepare("SELECT * FROM liqueurs WHERE id = :id");
+  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+  $stmt->execute();
+  $liqueur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  if (!$liqueur) {
+    $data = ['error' => 'Product not found'];
+    $response->getBody()->write(json_encode($data));
+    return $response->withStatus(404)
+      ->withHeader('Content-Type', 'application/json');
+  }
+
+  return $twig->render($response, 'product.twig', ['navbarData' => $navbarData, 'product' => $liqueur]);
+  $response->getBody()->write(json_encode($liqueur));
+  return $response->withHeader('Content-Type', 'application/json');
+});
 
 
 
