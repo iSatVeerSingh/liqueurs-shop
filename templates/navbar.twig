@@ -1,0 +1,81 @@
+<header>
+	<nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Badwater Main Menu">
+		<div class="container-fluid align-items-center">
+			<a class="navbar-brand" href="#">
+				<img src="./badwater-logo.png" alt="Logo"/>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainnavbar" aria-controls="mainnavbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="mainnavbar">
+				<ul class="navbar-nav mx-auto gap-xl-5">
+					<li class="nav-item dropdown">
+						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+							SPIRITS
+						</button>
+						<ul class="dropdown-menu">
+							{% for category, bottles in navbarData.spirits %}
+								<li class="dropend">
+									<button class="dropdown-item dropdown-toggle sub-dropdown-btn py-2">
+										{{ category }}
+									</button>
+									<ul class="dropdown-menu">
+										{% for bottle in bottles %}
+											<li>
+												<a class="dropdown-item" href="#">{{ bottle }}</a>
+											</li>
+										{% endfor %}
+									</ul>
+								</li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="nav-item dropdown">
+						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+							CHAMPAGNE
+						</button>
+						<ul class="dropdown-menu">
+							{% for distiller in navbarData.distillers %}
+								<li>
+									<a class="dropdown-item" href="#">{{ distiller }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="nav-item dropdown">
+						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+							RARE FINDS
+						</button>
+						<ul class="dropdown-menu">
+							{% for region in navbarData.regions %}
+								<li>
+									<a class="dropdown-item" href="#">{{ region }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					</li>
+					<li class="nav-item">
+						<button class="nav-link" type="button" aria-expanded="false">
+							TRENDING
+						</button>
+					</li>
+					<li class="nav-item">
+						<button class="nav-link" type="button" aria-expanded="false">
+							GIFTS
+						</button>
+					</li>
+				</ul>
+				<form class="d-flex">
+					<div class="input-group">
+						<span class="input-group-text border-0" id="search-icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-search text-light" viewbox="0 0 16 16">
+								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+							</svg>
+						</span>
+						<input class="form-control border-0" type="search" placeholder="RHUM J.M." aria-label="Search" aria-describedby="search-icon"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+</header>

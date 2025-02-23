@@ -1,0 +1,31 @@
+# Composer vendor directory
+/vendor/
+
+# Composer lock file (optional: track if you want reproducible installs)
+composer.lock
+
+# Environment variables file
+.env
+
+# SQLite database files (adjust if you want to track an initial seed)
+*.sqlite
+*.sqlite3
+
+# Log files
+*.log
+
+# Node modules (if applicable)
+node_modules/
+
+# Build directories (if using frontend build tools)
+public/build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE and editor directories
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/

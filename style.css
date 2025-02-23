@@ -1,0 +1,50 @@
+.navbar-brand img {
+  max-height: 40px;
+  margin-right: 10px;
+  max-width: 200px;
+}
+
+.nav-item .nav-link {
+  color: white !important;
+}
+
+.dropdown-menu .dropdown-menu {
+  left: 100%;
+  top: 0;
+  margin-top: -1px;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar h5 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-search {
+  margin-bottom: 0.75rem;
+}
+
+.see-more {
+  cursor: pointer;
+  color: #dc3545;
+  text-decoration: underline;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.product-card {
+  min-height: 320px;
+}
+
+.product-card img {
+  max-width: 150px;
+  max-height: 150px;
+  display: block;
+  margin: auto;
+}
