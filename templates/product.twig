@@ -46,13 +46,13 @@
 			<div
 				class="row">
 				<!-- Left Column: Product Image -->
-				<div class="col-md-5">
+				<div class="col-md-4 text-center">
 					<img src="{{ product.image }}" alt="{{ product.bottle }}" class="product-image img-fluid"/>
 				</div>
 
 				<!-- Right Column: Product Details -->
 				<div
-					class="col-md-7">
+					class="col-md-8">
 					<!-- Product Title & Price -->
 					<h1
 						class="h4 mb-2">
@@ -68,32 +68,24 @@
 					<!-- Size, Proof, and other meta data -->
 					<ul class="list-unstyled product-meta mb-4">
 						<li>
-							<strong>Size:</strong>
-							750ml</li>
+							<strong>1oz:</strong>
+							{{ product.price_1_oz }}
+						</li>
+						<li>
+							<strong>Age:</strong>
+							{{ product.age != "NAS" ? age ~ " Years" : "NAS" }}</li>
 						<li>
 							<strong>Proof:</strong>
 							{{ product.proof }}</li>
 					</ul>
 
 					<!-- Description -->
+					<p class="fs-5 fw-bold">
+						About
+						{{ product.bottle }}</p>
 					<p>
 						{{ product.description }}
 					</p>
-
-					<!-- Quantity & Add to Cart -->
-					<div class="d-flex align-items-center mb-3">
-						<input type="number" min="1" value="1" class="form-control w-auto me-2" style="max-width: 70px;"/>
-						<button class="btn btn-danger">Add to Cart</button>
-					</div>
-
-					<!-- Rewards Box -->
-					<div class="rewards-box">
-						<h5 class="mb-2">Caskers Rewards</h5>
-						<p class="mb-1">
-							Earn up to 5% back on this product with Caskers Rewards.
-						</p>
-						<a href="#" class="btn btn-outline-secondary btn-sm">Learn More</a>
-					</div>
 				</div>
 			</div>
 		</div>
