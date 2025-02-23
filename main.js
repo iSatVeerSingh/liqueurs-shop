@@ -88,17 +88,25 @@ function renderProducts(responseData) {
   const gridContainer = document.getElementById("productsGrid");
   gridContainer.innerHTML = ""; // Clear previous items
 
-  // Render each product card
   responseData.data.forEach((item) => {
     const col = document.createElement("div");
     col.className = "col";
     col.innerHTML = `
-      <div class="card product-card py-3">
-        <img src="${item.image}" alt="${item.bottle}" />
+      <div class="card product-card shadow-sm mb-4">
+        <div class="position-relative">
+          <img src="${item.image}" class="card-img-top" alt="${item.bottle}" />
+          <a href="/liqueurs/${item.id}" class="stretched-link"></a>
+        </div>
         <div class="card-body">
-          <h5 class="card-title">${item.bottle}</h5>
-          <p class="mb-2">${item.value}</p>
-          <button class="btn btn-outline-danger w-100 rounded-0">Add to Cart</button>
+          <h5 class="card-title mb-2">${item.bottle}</h5>
+          <p class="text-danger fw-bold fs-5 mb-2">${item.value}</p>
+          <p class="mb-1 text-muted">
+            <small>${item.distiller} &bull; ${item.type} &bull; ${item.region}</small>
+          </p>
+          <p class="mb-3 text-muted">
+            <small>Proof: ${item.proof} | Age: ${item.age}</small>
+          </p>
+          <button class="btn btn-outline-danger w-100 rounded-0 add-to-cart">Add to Cart</button>
         </div>
       </div>
     `;

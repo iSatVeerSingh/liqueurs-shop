@@ -31,21 +31,11 @@ $app->get('/search', function ($request, $response, $args) use ($twig) {
 
 $app->get('/liqueurs', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
-  $categoriesAndTypes = getUniqueCategoriesAndTypes();
 
-  return $twig->render($response, 'liqueurs.twig', ['navbarData' => $navbarData, 'sidebarData' => $categoriesAndTypes]);
+  return $twig->render($response, 'liqueurs.twig', ['navbarData' => $navbarData]);
 });
 
-$app->get('/api', function (Request $request, Response $response, $args) {
-  // Retrieve query parameters and set up pagination
-  $params = $request->getQueryParams();
-  $payload = getFilteredLiqueurs($params);
-
-  $response->getBody()->write(json_encode($payload));
-  return $response->withHeader('Content-Type', 'application/json');
-});
-
-$app->get('/api/{id}', function (Request $request, Response $response, $args) use ($twig) {
+$app->get('/liqueurs/{id}', function (Request $request, Response $response, $args) use ($twig) {
   $id = (int)$args['id'];
   $navbarData = getNavbarData();
   // Connect to SQLite
@@ -70,11 +60,21 @@ $app->get('/api/{id}', function (Request $request, Response $response, $args) us
   return $response->withHeader('Content-Type', 'application/json');
 });
 
+$app->get('/api', function (Request $request, Response $response, $args) {
+  // Retrieve query parameters and set up pagination
+  $params = $request->getQueryParams();
+  $payload = getFilteredLiqueurs($params);
+
+  $response->getBody()->write(json_encode($payload));
+  return $response->withHeader('Content-Type', 'application/json');
+});
+
 $app->get('/contact', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
 
   return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
 });
+
 
 // POST /api/import
 $app->post('/api/upload', function (Request $request, Response $response) {
@@ -175,6 +175,13 @@ $app->post('/api/upload', function (Request $request, Response $response) {
     return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
   }
 });
+
+$app->get('/{routes:.+}', function (Request $request, Response $response, $args) use ($twig) {
+  $navbarData = getNavbarData();
+
+  return $twig->render($response, '404.twig', ['navbarData' => $navbarData]);
+});
+
 
 // Run the app
 $app->run();

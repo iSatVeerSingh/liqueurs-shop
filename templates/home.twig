@@ -6,11 +6,82 @@
 		<title>Badwater Liquers Shop</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
 
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="/style.css">
+
+		<style>
+			.hero-section {
+				position: relative;
+				width: 100%;
+				height: 70vh;
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.hero-link {
+				color: #fff;
+				font-size: 2.5rem;
+				text-decoration: none;
+				font-weight: bold;
+				padding: 0.5rem 1rem;
+				border: none;
+				font-family: 'Times New Roman', Times, serif;
+				transition: background 0.3s;
+			}
+
+
+			.hero-link:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+		</style>
 	</head>
 	<body>
 		{% include 'navbar.twig' with { 'navbarData': navbarData } %}
+		<section class="hero-section" style="background-image: url('/images/bourbon-whiskey.jpg');">
+			<div class="overlay">
+				<a href="/section1" class="hero-link">BOURBON WHISKEY</a>
+			</div>
+		</section>
+
+		<section class="hero-section" style="background-image: url('/images/whiskey-flights.jpg');">
+			<div class="overlay">
+				<a href="/section2" class="hero-link">WHISKEY FLIGHTS</a>
+			</div>
+		</section>
+
+		<section class="hero-section" style="background-image: url('/images/scotch-whiskey.jpg');">
+			<div class="overlay">
+				<a href="/section3" class="hero-link">SCOTCH WHISKY</a>
+			</div>
+		</section>
+
+		<section class="hero-section" style="background-image: url('/images/rum.jpg');">
+			<div class="overlay">
+				<a href="/section4" class="hero-link">RUM</a>
+			</div>
+		</section>
+
+		<section class="hero-section" style="background-image: url('/images/gin.jpg');">
+			<div class="overlay">
+				<a href="/section5" class="hero-link">GIN</a>
+			</div>
+		</section>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-		<script src="./navbar.js"></script>
+		<script src="/navbar.js"></script>
 	</body>
 </html>
