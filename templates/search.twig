@@ -5,19 +5,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<title>Badwater Liquers Shop</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="style.css"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+		<link rel="stylesheet" href="/style.css"/>
 	</head>
 	<body>
 		{% include 'navbar.twig' with { 'navbarData': navbarData } %}
-		<div class="container-fluid">
+		<div class="container-xl py-4">
+			<h1 class="text-center">Search Results</h1>
 			<div class="row">
-				<div class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
+				<div class="sidebar col-md-3 p-0">
 					<div class="offcanvas-md offcanvas-start bg-body-tertiary" tabindex="-1" id="filterSidebar" aria-labelledby="filterSidebarLabel">
 						<div class="offcanvas-header">
 							<h5 class="offcanvas-title" id="filterSidebarLabel">Filters</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filterSidebar" aria-label="Close"></button>
 						</div>
-						<div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+						<div class="offcanvas-body d-md-flex flex-column p-0 overflow-y-auto">
 							<div
 								class="accordion" id="filtersAccordion">
 								<!-- Category Filter -->
@@ -29,8 +31,12 @@
 									</h2>
 									<div id="collapseCategory" class="accordion-collapse collapse show" aria-labelledby="headingCategory" data-bs-parent="#filtersAccordion">
 										<div class="accordion-body">
-											<input
-											type="text" class="form-control filter-search" placeholder="Search categories..." id="catSearch"/>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="inputGroup-sizing-default">
+													<i class="bi bi-search"></i>
+												</span>
+												<input type="text" class="form-control filter-search" placeholder="Search categories..." id="catSearch">
+											</div>
 											<!-- Container for category list -->
 											<div id="categoryList"></div>
 											<span class="see-more" id="seeMore" data-expanded="false">See more</span>
@@ -46,8 +52,12 @@
 									</h2>
 									<div id="collapseType" class="accordion-collapse collapse" aria-labelledby="headingType" data-bs-parent="#filtersAccordion">
 										<div class="accordion-body">
-											<input
-											type="text" class="form-control filter-search" placeholder="Search types..." id="typeSearch"/>
+											<div class="input-group mb-3">
+												<span class="input-group-text" id="inputGroup-sizing-default">
+													<i class="bi bi-search"></i>
+												</span>
+												<input type="text" class="form-control filter-search" placeholder="Search types..." id="typeSearch">
+											</div>
 											<!-- Container for types list -->
 											<div id="typeList"></div>
 											<span class="see-more" id="seeMoreType" data-expanded="false">See more</span>
@@ -63,29 +73,29 @@
 									</h2>
 									<div id="collapsePrice" class="accordion-collapse collapse" aria-labelledby="headingPrice" data-bs-parent="#filtersAccordion">
 										<div class="accordion-body" id="desktopPriceRange">
-											<div class="mb-1">
-												<input type="checkbox" id="price1" class="price-range-checkbox" data-min="0" data-max="5"/>
-												<label for="price1">$0 - $5</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price1" class="price-range-checkbox form-check-input" data-min="0" data-max="5"/>
+												<label for="price1" class="form-check-label">$0 - $5</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="price2" class="price-range-checkbox" data-min="5" data-max="10"/>
-												<label for="price2">$5 - $10</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price2" class="price-range-checkbox form-check-input" data-min="5" data-max="10"/>
+												<label for="price2" class="form-check-label">$5 - $10</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="price3" class="price-range-checkbox" data-min="10" data-max="20"/>
-												<label for="price3">$10 - $20</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price3" class="price-range-checkbox form-check-input" data-min="10" data-max="20"/>
+												<label for="price3" class="form-check-label">$10 - $20</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="price4" class="price-range-checkbox" data-min="20" data-max="50"/>
-												<label for="price4">$20 - $50</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price4" class="price-range-checkbox form-check-input" data-min="20" data-max="50"/>
+												<label for="price4" class="form-check-label">$20 - $50</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="price5" class="price-range-checkbox" data-min="50" data-max="100"/>
-												<label for="price5">$50 - $100</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price5" class="price-range-checkbox form-check-input" data-min="50" data-max="100"/>
+												<label for="price5" class="form-check-label">$50 - $100</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="price6" class="price-range-checkbox" data-min="100" data-max="Infinity"/>
-												<label for="price6">$100+</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="price6" class="price-range-checkbox form-check-input" data-min="100" data-max="Infinity"/>
+												<label for="price6" class="form-check-label">$100+</label>
 											</div>
 										</div>
 									</div>
@@ -99,52 +109,52 @@
 									</h2>
 									<div id="collapseAge" class="accordion-collapse collapse" aria-labelledby="headingAge" data-bs-parent="#filtersAccordion">
 										<div class="accordion-body" id="desktopAgeRange">
-											<div class="mb-1">
-												<input type="checkbox" id="age1" class="age-range-checkbox" data-min="0" data-max="3"/>
-												<label for="age1">0 - 3 Years</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="age1" class="age-range-checkbox form-check-input" data-min="0" data-max="3"/>
+												<label for="age1" class="form-check-label">0 - 3 Years</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="age2" class="age-range-checkbox" data-min="3" data-max="6"/>
-												<label for="age2">3 - 6 Years</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="age2" class="age-range-checkbox form-check-input" data-min="3" data-max="6"/>
+												<label for="age2" class="form-check-label">3 - 6 Years</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="age3" class="age-range-checkbox" data-min="6" data-max="12"/>
-												<label for="age3">6 - 12 Years</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="age3" class="age-range-checkbox form-check-input" data-min="6" data-max="12"/>
+												<label for="age3" class="form-check-label">6 - 12 Years</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="age4" class="age-range-checkbox" data-min="12" data-max="15"/>
-												<label for="age4">12 - 15 Years</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="age4" class="age-range-checkbox form-check-input" data-min="12" data-max="15"/>
+												<label for="age4" class="form-check-label">12 - 15 Years</label>
 											</div>
-											<div class="mb-1">
-												<input type="checkbox" id="age5" class="age-range-checkbox" data-min="15" data-max="Infinity"/>
-												<label for="age5">15+ Years</label>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="age5" class="age-range-checkbox form-check-input" data-min="15" data-max="Infinity"/>
+												<label for="age5" class="form-check-label">15+ Years</label>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<!-- Common Filter Buttons -->
-							<div id="filterButtons" class="mt-3">
-								<button id="applyFilters" class="btn btn-primary">Apply Filters</button>
-								<button id="clearFilters" class="btn btn-secondary">Clear Filters</button>
+							<div id="filterButtons" class="row gap-2 m-0 mt-3 px-2 px-md-0">
+								<button id="applyFilters" class="col btn btn-primary">Apply Filters</button>
+								<button id="clearFilters" class="col btn btn-secondary">Clear Filters</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<main
-					class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+					class="col-md-9 ms-sm-auto px-md-4 mt-2">
 					<!-- Mobile Offcanvas Toggle Button (only visible on mobile) -->
-					<div class="d-lg-none m-3">
-						<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar" aria-controls="filterSidebar">
-							☰ Filters
-						</button>
-					</div>
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-						<h1 class="h2">Search Results</h1>
-						<div class="col-12 col-sm-6 text-sm-end mt-2 mt-sm-0">
-							<label for="sortSelect" class="me-2">Sort by:</label>
-							<select id="sortSelect" class="form-select d-inline-block w-auto">
+
+					<div class="d-flex flex-wrap gap-2 justify-content-sm-between mb-3">
+						<div class="d-md-none">
+							<button class="btn btn-outline-secondary rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar" aria-controls="filterSidebar">
+								<i class="bi bi-grid-3x2-gap-fill"></i>
+							</button>
+						</div>
+						<div class="d-flex align-items-center ms-auto ms-sm-0">
+							<label for="sortSelect" class="d-none d-lg-block" style="min-width: 80px;">Sort by:</label>
+							<select id="sortSelect" class="form-select rounded-0">
 								<option value="">Best Match</option>
 								<option value="price,asc">Price: Low to High</option>
 								<option value="price,dsc">Price: High to Low</option>
@@ -152,47 +162,26 @@
 								<option value="bottle,dsc">Name: Z to A</option>
 							</select>
 						</div>
+
+
+						<!-- Pagination -->
+						<nav aria-label="Page navigation" class="">
+							<ul class="pagination mb-0" id="paginationContainer"></ul>
+						</nav>
+
 					</div>
 
 					<!-- Products Grid -->
-					<div class="row" id="productsGrid"></div>
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-gap-3" id="productsGrid"></div>
 					<!-- Loading Spinner -->
 					<div id="loading" class="text-center my-4" style="display: none;">
 						<div class="spinner-border text-primary" role="status">
 							<span class="visually-hidden">Loading...</span>
 						</div>
 					</div>
-
-					<!-- Pagination -->
-					<nav aria-label="Page navigation example">
-						<ul class="pagination justify-content-center" id="paginationContainer">
-							<li class="page-item disabled">
-								<a class="page-link" href="#" tabindex="-1">Previous</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">2</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">3</a>
-							</li>
-							<li class="page-item">
-								<a class="page-link" href="#">Next</a>
-							</li>
-						</ul>
-					</nav>
 				</main>
 			</div>
-		</div>
-
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-		<script>
-			const sidebarData = {{ sidebarData|json_encode|raw }};
-		</script>
-		<script src="/navbar.js"></script>
-		<script src="/sidebar.js"></script>
-		<script src="/main.js"></script>
+		</body>
 	</body>
-</html>
+</html></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script><script>
+const sidebarData = {{ sidebarData|json_encode|raw }};</script><script src="/navbar.js"></script><script src="/sidebar.js"></script><script src="/main.js"></script></body></html>

@@ -35,15 +35,17 @@ const updateFilterList = (
   container.innerHTML = "";
   itemsToShow.forEach((item) => {
     const div = document.createElement("div");
-    div.className = "mb-1";
+    div.className = "mb-1 d-flex align-items-center gap-1";
     const id = prefix + "-" + item.replace(/\s+/g, "-").toLowerCase();
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add(prefix + "-checkbox");
+    checkbox.classList.add("form-check-input");
     checkbox.setAttribute("data-" + prefix, item);
     checkbox.id = id;
 
     const label = document.createElement("label");
+    label.classList.add('form-check-label')
     label.htmlFor = id;
     label.textContent = item;
 
