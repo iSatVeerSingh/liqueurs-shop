@@ -77,7 +77,7 @@ $app->get('/contact', function ($request, $response, $args) use ($twig) {
 });
 
 // POST /api/import
-$app->post('/api/import', function (Request $request, Response $response) {
+$app->post('/api/upload', function (Request $request, Response $response) {
   try {
     // 1. Read JSON from the request body
     $jsonData = $request->getBody()->getContents();
