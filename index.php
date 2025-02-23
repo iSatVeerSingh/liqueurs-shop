@@ -76,7 +76,105 @@ $app->get('/contact', function ($request, $response, $args) use ($twig) {
   return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
 });
 
+// POST /api/import
+$app->post('/api/import', function (Request $request, Response $response) {
+  try {
+    // 1. Read JSON from the request body
+    $jsonData = $request->getBody()->getContents();
+    if (empty($jsonData)) {
+      throw new Exception("No JSON data provided.");
+    }
 
+    // 2. Decode JSON
+    $items = json_decode($jsonData, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      throw new Exception("Invalid JSON format.");
+    }
+
+    // 3. Connect to SQLite
+    $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // 4. Begin transaction
+    $db->beginTransaction();
+
+    // 5. Delete existing data
+    $db->exec("DELETE FROM liqueurs");
+
+    // 6. Prepare insert statement
+    $stmt = $db->prepare("
+            INSERT INTO liqueurs (
+                distiller,
+                bottle,
+                type,
+                category,
+                region,
+                value,
+                proof,
+                age,
+                price_half_oz,
+                price_1_oz,
+                image,
+                description,
+                grade
+            ) VALUES (
+                :distiller,
+                :bottle,
+                :type,
+                :category,
+                :region,
+                :value,
+                :proof,
+                :age,
+                :price_half_oz,
+                :price_1_oz,
+                :image,
+                :description,
+                :grade
+            )
+        ");
+
+    // 7. Insert each item
+    foreach ($items as $item) {
+      // Adjust the key for price_1/2_oz if needed
+      $stmt->execute([
+        ':distiller'      => $item['distiller']      ?? null,
+        ':bottle'         => $item['bottle']         ?? null,
+        ':type'           => $item['type']           ?? null,
+        ':category'       => $item['category']       ?? null,
+        ':region'         => $item['region']         ?? null,
+        ':value'          => $item['value']          ?? null,
+        ':proof'          => $item['proof']          ?? null,
+        ':age'            => $item['age']            ?? null,
+        ':price_half_oz'  => $item['price_1/2_oz']   ?? null,
+        ':price_1_oz'     => $item['price_1_oz']     ?? null,
+        ':image'          => $item['image']          ?? null,
+        ':description'    => $item['description']    ?? null,
+        ':grade'          => $item['grade']          ?? null,
+      ]);
+    }
+
+    // 8. Commit transaction
+    $db->commit();
+
+    // 9. Return success response
+    $result = ['message' => 'Data updated successfully.'];
+    $response->getBody()->write(json_encode($result));
+    return $response->withHeader('Content-Type', 'application/json');
+  } catch (Exception $e) {
+    // Roll back if something goes wrong
+    if (isset($db) && $db->inTransaction()) {
+      $db->rollBack();
+    }
+
+    $error = [
+      'error'   => true,
+      'message' => $e->getMessage()
+    ];
+    $response->getBody()->write(json_encode($error));
+    return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+  }
+});
 
 // Run the app
 $app->run();
