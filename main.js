@@ -88,6 +88,11 @@ function renderProducts(responseData) {
   const gridContainer = document.getElementById("productsGrid");
   gridContainer.innerHTML = ""; // Clear previous items
 
+  if (responseData.data.length === 0) {
+    gridContainer.innerHTML = `<p style="flex: 0 0 100%; max-width: 100%;" class="fs-3 text-center">No Results Found</p>`;
+    return;
+  }
+
   responseData.data.forEach((item) => {
     const col = document.createElement("div");
     col.className = "col";

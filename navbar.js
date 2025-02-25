@@ -118,6 +118,4 @@ document.addEventListener("DOMContentLoaded", () => {
       searchInput.value = bottleParam;
     }
   }
-
-  console.log(bootstrap);
 });
