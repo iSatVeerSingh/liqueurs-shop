@@ -4,7 +4,7 @@
 function getFilteredLiqueurs($params)
 {
   $page   = (isset($params['page']) && is_numeric($params['page']) && $params['page'] > 0) ? (int)$params['page'] : 1;
-  $limit  = 20;
+  $limit  = 50;
   $offset = ($page - 1) * $limit;
 
   // Connect to the SQLite database
@@ -69,22 +69,22 @@ function getFilteredLiqueurs($params)
     $bindings[':bottle'] = '%' . trim($params['bottle']) . '%';
   }
 
-  // Filter by price range on price_1_oz (remove '$' and cast to REAL)
+  // Filter by price range on cost (numeric column)
   if (!empty($params['price'])) {
     $price = trim($params['price']);
     if (strpos($price, '-') !== false) {
       list($min, $max) = explode('-', $price);
-      $query .= " AND CAST(REPLACE(value, '$', '') AS REAL) BETWEEN :price_min AND :price_max";
+      $query .= " AND cost BETWEEN :price_min AND :price_max";
       $bindings[':price_min'] = (float)$min;
       $bindings[':price_max'] = (float)$max;
     } elseif (substr($price, -1) === '+') {
       $min = rtrim($price, '+');
-      $query .= " AND CAST(REPLACE(value, '$', '') AS REAL) >= :price_min";
+      $query .= " AND cost >= :price_min";
       $bindings[':price_min'] = (float)$min;
     }
   }
 
-  // Filter by age range (excluding 'NAS'; assuming numeric age)
+  // Filter by age range (excluding 'NAS'; assuming numeric age when not NAS)
   if (!empty($params['age'])) {
     $age = trim($params['age']);
     if (strpos($age, '-') !== false) {
@@ -104,14 +104,13 @@ function getFilteredLiqueurs($params)
     $sortParts = explode(',', $params['sort']);
     if (count($sortParts) === 2) {
       $sortField = strtolower(trim($sortParts[0]));
-      // Use 'ASC' by default; if provided value is "dsc" then use "DESC"
       $sortDir   = (strtolower(trim($sortParts[1])) === 'dsc') ? 'DESC' : 'ASC';
 
       if ($sortField === 'bottle') {
         $query .= " ORDER BY bottle " . $sortDir;
       } elseif ($sortField === 'price') {
-        // Sort by price_1_oz after removing the dollar sign and casting to real
-        $query .= " ORDER BY CAST(REPLACE(price_1_oz, '$', '') AS REAL) " . $sortDir;
+        // Sorting by cost column now
+        $query .= " ORDER BY cost " . $sortDir;
       }
     }
   }
@@ -173,9 +172,9 @@ function getFilteredLiqueurs($params)
   if (!empty($params['price'])) {
     $price = trim($params['price']);
     if (strpos($price, '-') !== false) {
-      $countQuery .= " AND CAST(REPLACE(price_1_oz, '$', '') AS REAL) BETWEEN :price_min AND :price_max";
+      $countQuery .= " AND cost BETWEEN :price_min AND :price_max";
     } elseif (substr($price, -1) === '+') {
-      $countQuery .= " AND CAST(REPLACE(price_1_oz, '$', '') AS REAL) >= :price_min";
+      $countQuery .= " AND cost >= :price_min";
     }
   }
   if (!empty($params['age'])) {
@@ -205,6 +204,7 @@ function getFilteredLiqueurs($params)
     'data'         => $results
   ];
 }
+
 
 function getNavbarData()
 {
