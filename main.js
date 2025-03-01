@@ -28,62 +28,6 @@ async function fetchLiqueursData() {
   }
 }
 
-// Function to generate pagination links based on current page and total pages
-function generatePaginationLinks(currentPage, totalPages) {
-  let pages = [];
-  if (totalPages <= 6) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else {
-    if (currentPage <= 3) {
-      pages = [1, 2, 3, "...", totalPages - 1, totalPages];
-    } else if (currentPage >= totalPages - 2) {
-      pages = [1, 2, "...", totalPages - 2, totalPages - 1, totalPages];
-    } else {
-      pages = [1, "...", currentPage, currentPage + 1, "...", totalPages];
-    }
-  }
-  return pages;
-}
-
-// Function to render the pagination UI in the container with id "paginationContainer"
-function renderPagination(totalPages, currentPage) {
-  const container = document.getElementById("paginationContainer");
-  container.innerHTML = ""; // Clear previous pagination
-
-  // Create Previous button
-  const prevLi = document.createElement("li");
-  prevLi.className = "page-item" + (currentPage === 1 ? " disabled" : "");
-  prevLi.innerHTML = `<a class="page-link" href="#" data-page="${
-    currentPage - 1
-  }"><i class="bi bi-chevron-left"></i></a>`;
-  container.appendChild(prevLi);
-
-  // Generate pagination links
-  const pages = generatePaginationLinks(currentPage, totalPages);
-  pages.forEach((page) => {
-    const li = document.createElement("li");
-    if (page === "...") {
-      li.className = "page-item disabled";
-      li.innerHTML = `<span class="page-link">${page}</span>`;
-    } else {
-      li.className = "page-item" + (page === currentPage ? " active" : "");
-      li.innerHTML = `<a class="page-link" href="#" data-page="${page}">${page}</a>`;
-    }
-    container.appendChild(li);
-  });
-
-  // Create Next button
-  const nextLi = document.createElement("li");
-  nextLi.className =
-    "page-item" + (currentPage === totalPages ? " disabled" : "");
-  nextLi.innerHTML = `<a class="page-link" href="#" data-page="${
-    currentPage + 1
-  }"><i class="bi bi-chevron-right"></i></a>`;
-  container.appendChild(nextLi);
-}
-
 // Function to render the product grid based on the server response
 function renderProducts(responseData) {
   const gridContainer = document.getElementById("productsGrid");
@@ -128,34 +72,10 @@ function renderProducts(responseData) {
     `;
     gridContainer.appendChild(col);
   });
-
-  // Render the pagination UI using metadata from the response
-  // renderPagination(responseData.total_pages, responseData.current_page);
 }
 
 // --- Initial Setup on Page Load ---
 document.addEventListener("DOMContentLoaded", async () => {
-  // Pagination click event delegation
-  document
-    .getElementById("paginationContainer")
-    .addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = e.target;
-      if (
-        target.tagName === "A" &&
-        !target.parentElement.classList.contains("disabled") &&
-        !target.parentElement.classList.contains("active")
-      ) {
-        const newPage = target.getAttribute("data-page");
-        if (newPage) {
-          const url = new URL(window.location.href);
-          url.searchParams.set("page", newPage);
-          window.history.pushState(null, "", url.toString());
-          fetchLiqueursData();
-        }
-      }
-    });
-
   // Sorting
   document
     .getElementById("sortSelect")
