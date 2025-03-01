@@ -44,26 +44,6 @@ subDropdownButtons.forEach((button) => {
 
     subDropdown.toggle();
   });
-
-  // button.addEventListener("click", (event) => {
-  //   event.preventDefault();
-
-  //   // Prevent parent dropdown from closing
-  //   event.stopPropagation();
-
-  //   // Toggle the nested dropdown manually
-  //   let nestedMenu = button.nextElementSibling;
-  //   if (nestedMenu) {
-  //     let isOpen = nestedMenu.classList.contains("show");
-  //     document
-  //       .querySelectorAll(".dropdown-menu .dropdown-menu")
-  //       .forEach((menu) => menu.classList.remove("show"));
-
-  //     if (!isOpen) {
-  //       nestedMenu.classList.add("show");
-  //     }
-  //   }
-  // });
 });
 
 // Close dropdowns when clicking outside
