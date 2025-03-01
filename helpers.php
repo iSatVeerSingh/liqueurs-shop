@@ -284,18 +284,48 @@ function getFilteredLiqueurs($params)
     }
   }
 
+  // Filter by price range on price_1_oz
+  if (!empty($params['price_1_oz'])) {
+    $price1 = trim($params['price_1_oz']);
+    if (strpos($price1, '-') !== false) {
+      list($min1, $max1) = explode('-', $price1);
+      $query .= " AND price_1_oz BETWEEN :price1oz_min AND :price1oz_max";
+      $bindings[':price1oz_min'] = (float)$min1;
+      $bindings[':price1oz_max'] = (float)$max1;
+    } elseif (substr($price1, -1) === '+') {
+      $min1 = rtrim($price1, '+');
+      $query .= " AND price_1_oz >= :price1oz_min";
+      $bindings[':price1oz_min'] = (float)$min1;
+    }
+  }
+
+  // Filter by price range on price_half_oz
+  if (!empty($params['price_half_oz'])) {
+    $priceHalf = trim($params['price_half_oz']);
+    if (strpos($priceHalf, '-') !== false) {
+      list($minHalf, $maxHalf) = explode('-', $priceHalf);
+      $query .= " AND price_half_oz BETWEEN :pricehalfoz_min AND :pricehalfoz_max";
+      $bindings[':pricehalfoz_min'] = (float)$minHalf;
+      $bindings[':pricehalfoz_max'] = (float)$maxHalf;
+    } elseif (substr($priceHalf, -1) === '+') {
+      $minHalf = rtrim($priceHalf, '+');
+      $query .= " AND price_half_oz >= :pricehalfoz_min";
+      $bindings[':pricehalfoz_min'] = (float)$minHalf;
+    }
+  }
+
   // Filter by age range (excluding 'NAS'; assuming numeric age when not NAS)
   if (!empty($params['age'])) {
     $age = trim($params['age']);
     if (strpos($age, '-') !== false) {
-      list($min, $max) = explode('-', $age);
+      list($minAge, $maxAge) = explode('-', $age);
       $query .= " AND age != 'NAS' AND CAST(age AS REAL) BETWEEN :age_min AND :age_max";
-      $bindings[':age_min'] = (float)$min;
-      $bindings[':age_max'] = (float)$max;
+      $bindings[':age_min'] = (float)$minAge;
+      $bindings[':age_max'] = (float)$maxAge;
     } elseif (substr($age, -1) === '+') {
-      $min = rtrim($age, '+');
+      $minAge = rtrim($age, '+');
       $query .= " AND age != 'NAS' AND CAST(age AS REAL) >= :age_min";
-      $bindings[':age_min'] = (float)$min;
+      $bindings[':age_min'] = (float)$minAge;
     }
   }
 
@@ -309,7 +339,7 @@ function getFilteredLiqueurs($params)
       if ($sortField === 'bottle') {
         $query .= " ORDER BY bottle " . $sortDir;
       } elseif ($sortField === 'price') {
-        // Sorting by cost column now
+        // Sorting by cost column
         $query .= " ORDER BY cost " . $sortDir;
       }
     }
@@ -327,6 +357,7 @@ function getFilteredLiqueurs($params)
 
   return $results;
 }
+
 
 
 function getNavbarData()
