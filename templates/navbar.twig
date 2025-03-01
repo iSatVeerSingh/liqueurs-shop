@@ -23,11 +23,11 @@
 										<div class="px-3 fs-5 dropend-title border-bottom">Featured Brands</div>
 										{% for bottle in bottles %}
 											<li>
-												<a class="dropdown-item" href="/liqueurs?bottle={{ bottle }}">{{ bottle }}</a>
+												<a class="dropdown-item" href="/search?bottle={{ bottle }}">{{ bottle }}</a>
 											</li>
 										{% endfor %}
 										<div class="dropend-title border-top">
-											<a href="/liqueurs?categories={{ category }}" class="dropdown-item">See all brands</a>
+											<a href="/search?categories={{ category }}" class="dropdown-item">See all brands</a>
 										</div>
 									</ul>
 								</li>
@@ -41,7 +41,7 @@
 						<ul class="dropdown-menu">
 							{% for distiller in navbarData.distillers %}
 								<li>
-									<a class="dropdown-item" href="/liqueurs?distiller={{ distiller }}">{{ distiller }}</a>
+									<a class="dropdown-item" href="/search?distiller={{ distiller }}">{{ distiller }}</a>
 								</li>
 							{% endfor %}
 						</ul>
@@ -53,13 +53,13 @@
 						<ul class="dropdown-menu">
 							{% for region in navbarData.regions %}
 								<li>
-									<a class="dropdown-item" href="/liqueurs?region={{ region }}">{{ region }}</a>
+									<a class="dropdown-item" href="/search?region={{ region }}">{{ region }}</a>
 								</li>
 							{% endfor %}
 						</ul>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/liqueurs?categories=Whiskey" type="button" aria-expanded="false">
+						<a class="nav-link" href="/search?categories=Whiskey" type="button" aria-expanded="false">
 							WHISKEY
 						</a>
 					</li>

@@ -89,12 +89,12 @@ function renderProducts(responseData) {
   const gridContainer = document.getElementById("productsGrid");
   gridContainer.innerHTML = ""; // Clear previous items
 
-  if (responseData.data.length === 0) {
+  if (responseData.length === 0) {
     gridContainer.innerHTML = `<p style="flex: 0 0 100%; max-width: 100%;" class="fs-3 text-center">No Results Found</p>`;
     return;
   }
 
-  responseData.data.forEach((item) => {
+  responseData.forEach((item) => {
     let ageText;
     if (item.age === "NAS") {
       ageText = "NAS";
@@ -130,7 +130,7 @@ function renderProducts(responseData) {
   });
 
   // Render the pagination UI using metadata from the response
-  renderPagination(responseData.total_pages, responseData.current_page);
+  // renderPagination(responseData.total_pages, responseData.current_page);
 }
 
 // --- Initial Setup on Page Load ---
