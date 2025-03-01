@@ -18,6 +18,7 @@ async function fetchLiqueursData() {
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
     const responseData = await response.json();
+    console.log(responseData);
     renderProducts(responseData);
   } catch (error) {
     console.error("Fetch error:", error);
@@ -94,6 +95,15 @@ function renderProducts(responseData) {
   }
 
   responseData.data.forEach((item) => {
+    let ageText;
+    if (item.age === "NAS") {
+      ageText = "NAS";
+    } else if (parseFloat(item.age) === 1) {
+      ageText = "1 Year";
+    } else {
+      ageText = item.age + " Years";
+    }
+
     const col = document.createElement("div");
     col.className = "col";
     col.innerHTML = `
@@ -104,13 +114,13 @@ function renderProducts(responseData) {
         </div>
         <div class="card-body">
           <h5 class="card-title mb-2">${item.bottle}</h5>
-          <p class="text-danger fw-bold fs-5 mb-2">${item.value}</p>
-          <p class="mb-2"><span class="fw-bold fs-6">${item.price_1_oz}</span><small class="text-muted"> per oz</small></p>
+          <p class="mb-2"><span class="text-danger fw-bold fs-5">\$${item.price_half_oz}</span><small class="text-muted"> per 1/2 oz</small></p>
+          <p class="mb-2"><span class="fw-bold fs-6">\$${item.price_1_oz}</span><small class="text-muted"> per oz</small></p>
           <p class="mb-1 text-muted">
             <small>${item.distiller} &bull; ${item.type} &bull; ${item.region}</small>
           </p>
           <p class="mb-3 text-muted">
-            <small>Proof: ${item.proof} | Age: ${item.age}</small>
+            <small>Proof: ${item.proof} | Age: ${ageText}</small>
           </p>
           <button class="btn btn-outline-danger w-100 rounded-0 add-to-cart">Add to Cart</button>
         </div>
