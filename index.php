@@ -79,102 +79,104 @@ $app->get('/api', function (Request $request, Response $response, $args) {
 // POST /api/import
 $app->post('/api/upload', function (Request $request, Response $response) {
   try {
-    // 1. Read JSON from the request body
+    // Read JSON from request body
     $jsonData = $request->getBody()->getContents();
     if (empty($jsonData)) {
       throw new Exception("No JSON data provided.");
     }
 
-    // 2. Decode JSON
+    // Decode JSON
     $items = json_decode($jsonData, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
       throw new Exception("Invalid JSON format.");
     }
 
-    // 3. Connect to SQLite
+    // Connect to SQLite
     $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 4. Begin transaction
+    // Begin transaction
     $db->beginTransaction();
 
-    // 5. Delete existing data
+    // Delete all existing records
     $db->exec("DELETE FROM liqueurs");
 
-    // 6. Prepare insert statement
+    // Prepare SQL statement for insertion using new JSON keys
     $stmt = $db->prepare("
-            INSERT INTO liqueurs (
-                distiller,
-                bottle,
-                type,
-                category,
-                region,
-                value,
-                proof,
-                age,
-                price_half_oz,
-                price_1_oz,
-                image,
-                description,
-                grade
-            ) VALUES (
-                :distiller,
-                :bottle,
-                :type,
-                :category,
-                :region,
-                :value,
-                :proof,
-                :age,
-                :price_half_oz,
-                :price_1_oz,
-                :image,
-                :description,
-                :grade
-            )
-        ");
+          INSERT INTO liqueurs (
+              distiller,
+              bottle,
+              type,
+              category,
+              region,
+              cost,
+              proof,
+              age,
+              sub_region,
+              discontinued,
+              price_half_oz,
+              price_1_oz,
+              image,
+              description,
+              grade
+          ) VALUES (
+              :distiller,
+              :bottle,
+              :type,
+              :category,
+              :region,
+              :cost,
+              :proof,
+              :age,
+              :sub_region,
+              :discontinued,
+              :price_half_oz,
+              :price_1_oz,
+              :image,
+              :description,
+              :grade
+          )
+      ");
 
-    // 7. Insert each item
+    // Insert each item
     foreach ($items as $item) {
-      // Adjust the key for price_1/2_oz if needed
       $stmt->execute([
         ':distiller'      => $item['distiller']      ?? null,
         ':bottle'         => $item['bottle']         ?? null,
         ':type'           => $item['type']           ?? null,
         ':category'       => $item['category']       ?? null,
         ':region'         => $item['region']         ?? null,
-        ':value'          => $item['value']          ?? null,
-        ':proof'          => $item['proof']          ?? null,
+        ':cost'           => isset($item['cost']) ? (float)$item['cost'] : null,
+        ':proof'          => isset($item['proof']) ? (float)$item['proof'] : null,
+        // Age may be a number or "NAS"
         ':age'            => $item['age']            ?? null,
-        ':price_half_oz'  => $item['price_1/2_oz']   ?? null,
-        ':price_1_oz'     => $item['price_1_oz']     ?? null,
+        ':sub_region'     => $item['sub_region']     ?? '',
+        ':discontinued'   => isset($item['discontinued']) ? ($item['discontinued'] ? 1 : 0) : 0,
+        ':price_half_oz'  => isset($item['price_half_oz']) ? (float)$item['price_half_oz'] : null,
+        ':price_1_oz'     => isset($item['price_1_oz']) ? (float)$item['price_1_oz'] : null,
         ':image'          => $item['image']          ?? null,
         ':description'    => $item['description']    ?? null,
         ':grade'          => $item['grade']          ?? null,
       ]);
     }
 
-    // 8. Commit transaction
+    // Commit transaction
     $db->commit();
 
-    // 9. Return success response
     $result = ['message' => 'Data updated successfully.'];
     $response->getBody()->write(json_encode($result));
     return $response->withHeader('Content-Type', 'application/json');
   } catch (Exception $e) {
-    // Roll back if something goes wrong
     if (isset($db) && $db->inTransaction()) {
       $db->rollBack();
     }
-
-    $error = [
-      'error'   => true,
-      'message' => $e->getMessage()
-    ];
+    $error = ['error' => true, 'message' => $e->getMessage()];
     $response->getBody()->write(json_encode($error));
-    return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+    return $response->withStatus(400)
+      ->withHeader('Content-Type', 'application/json');
   }
 });
+
 
 $app->get('/{routes:.+}', function (Request $request, Response $response, $args) use ($twig) {
   $navbarData = getNavbarData();
