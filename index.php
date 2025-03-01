@@ -29,12 +29,6 @@ $app->get('/search', function ($request, $response, $args) use ($twig) {
   return $twig->render($response, 'search.twig', ['navbarData' => $navbarData, 'sidebarData' => $categoriesAndTypes]);
 });
 
-$app->get('/liqueurs', function ($request, $response, $args) use ($twig) {
-  $navbarData = getNavbarData();
-
-  return $twig->render($response, 'liqueurs.twig', ['navbarData' => $navbarData]);
-});
-
 $app->get('/liqueurs/{id}', function (Request $request, Response $response, $args) use ($twig) {
   $id = (int)$args['id'];
   $navbarData = getNavbarData();
