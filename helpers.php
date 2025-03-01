@@ -314,6 +314,21 @@ function getFilteredLiqueurs($params)
     }
   }
 
+  // Filter by proof range
+  if (!empty($params['proof'])) {
+    $proof = trim($params['proof']);
+    if (strpos($proof, '-') !== false) {
+      list($minProof, $maxProof) = explode('-', $proof);
+      $query .= " AND proof BETWEEN :proof_min AND :proof_max";
+      $bindings[':proof_min'] = (float)$minProof;
+      $bindings[':proof_max'] = (float)$maxProof;
+    } elseif (substr($proof, -1) === '+') {
+      $minProof = rtrim($proof, '+');
+      $query .= " AND proof >= :proof_min";
+      $bindings[':proof_min'] = (float)$minProof;
+    }
+  }
+
   // Filter by age range (excluding 'NAS'; assuming numeric age when not NAS)
   if (!empty($params['age'])) {
     $age = trim($params['age']);
@@ -357,8 +372,6 @@ function getFilteredLiqueurs($params)
 
   return $results;
 }
-
-
 
 function getNavbarData()
 {
