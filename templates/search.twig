@@ -66,40 +66,108 @@
 								</div>
 								<!-- Price Range Filter -->
 								<div class="accordion-item">
-									<h2 class="accordion-header" id="headingPrice">
-										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice" aria-expanded="false" aria-controls="collapsePrice">
-											Price Range
+									<h2 class="accordion-header" id="headingPrice1oz">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice1oz" aria-expanded="false" aria-controls="collapsePrice1oz">
+											Price 1 oz Range
 										</button>
 									</h2>
-									<div id="collapsePrice" class="accordion-collapse collapse" aria-labelledby="headingPrice" data-bs-parent="#filtersAccordion">
-										<div class="accordion-body" id="desktopPriceRange">
+									<div id="collapsePrice1oz" class="accordion-collapse collapse" aria-labelledby="headingPrice1oz" data-bs-parent="#filtersAccordion">
+										<div class="accordion-body" id="price1ozRange">
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price1" class="price-range-checkbox form-check-input" data-min="0" data-max="5"/>
-												<label for="price1" class="form-check-label">$0 - $5</label>
+												<input type="checkbox" id="price1oz_1" class="price-1oz-range-checkbox form-check-input" data-min="0" data-max="5"/>
+												<label for="price1oz_1" class="form-check-label">$0 - $5</label>
 											</div>
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price2" class="price-range-checkbox form-check-input" data-min="5" data-max="10"/>
-												<label for="price2" class="form-check-label">$5 - $10</label>
+												<input type="checkbox" id="price1oz_2" class="price-1oz-range-checkbox form-check-input" data-min="5" data-max="10"/>
+												<label for="price1oz_2" class="form-check-label">$5 - $10</label>
 											</div>
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price3" class="price-range-checkbox form-check-input" data-min="10" data-max="20"/>
-												<label for="price3" class="form-check-label">$10 - $20</label>
+												<input type="checkbox" id="price1oz_3" class="price-1oz-range-checkbox form-check-input" data-min="10" data-max="20"/>
+												<label for="price1oz_3" class="form-check-label">$10 - $20</label>
 											</div>
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price4" class="price-range-checkbox form-check-input" data-min="20" data-max="50"/>
-												<label for="price4" class="form-check-label">$20 - $50</label>
+												<input type="checkbox" id="price1oz_4" class="price-1oz-range-checkbox form-check-input" data-min="20" data-max="50"/>
+												<label for="price1oz_4" class="form-check-label">$20 - $50</label>
 											</div>
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price5" class="price-range-checkbox form-check-input" data-min="50" data-max="100"/>
-												<label for="price5" class="form-check-label">$50 - $100</label>
+												<input type="checkbox" id="price1oz_5" class="price-1oz-range-checkbox form-check-input" data-min="50" data-max="100"/>
+												<label for="price1oz_5" class="form-check-label">$50 - $100</label>
 											</div>
 											<div class="mb-1 d-flex align-items-center gap-1">
-												<input type="checkbox" id="price6" class="price-range-checkbox form-check-input" data-min="100" data-max="Infinity"/>
-												<label for="price6" class="form-check-label">$100+</label>
+												<input type="checkbox" id="price1oz_6" class="price-1oz-range-checkbox form-check-input" data-min="100" data-max="Infinity"/>
+												<label for="price1oz_6" class="form-check-label">$100+</label>
 											</div>
 										</div>
 									</div>
 								</div>
+
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="headingPriceHalfoz">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePriceHalfoz" aria-expanded="false" aria-controls="collapsePriceHalfoz">
+											Price Half oz Range
+										</button>
+									</h2>
+									<div id="collapsePriceHalfoz" class="accordion-collapse collapse" aria-labelledby="headingPriceHalfoz" data-bs-parent="#filtersAccordion">
+										<div class="accordion-body" id="priceHalfozRange">
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_1" class="price-halfoz-range-checkbox form-check-input" data-min="0" data-max="5"/>
+												<label for="priceHalfoz_1" class="form-check-label">$0 - $5</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_2" class="price-halfoz-range-checkbox form-check-input" data-min="5" data-max="10"/>
+												<label for="priceHalfoz_2" class="form-check-label">$5 - $10</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_3" class="price-halfoz-range-checkbox form-check-input" data-min="10" data-max="20"/>
+												<label for="priceHalfoz_3" class="form-check-label">$10 - $20</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_4" class="price-halfoz-range-checkbox form-check-input" data-min="20" data-max="50"/>
+												<label for="priceHalfoz_4" class="form-check-label">$20 - $50</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_5" class="price-halfoz-range-checkbox form-check-input" data-min="50" data-max="100"/>
+												<label for="priceHalfoz_5" class="form-check-label">$50 - $100</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="priceHalfoz_6" class="price-halfoz-range-checkbox form-check-input" data-min="100" data-max="Infinity"/>
+												<label for="priceHalfoz_6" class="form-check-label">$100+</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="accordion-item">
+									<h2 class="accordion-header" id="headingProof">
+										<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProof" aria-expanded="false" aria-controls="collapseProof">
+											Proof
+										</button>
+									</h2>
+									<div id="collapseProof" class="accordion-collapse collapse" aria-labelledby="headingProof" data-bs-parent="#filtersAccordion">
+										<div class="accordion-body" id="proofRange">
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="proof1" class="proof-range-checkbox form-check-input" data-min="0" data-max="40"/>
+												<label for="proof1" class="form-check-label">0 - 40</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="proof2" class="proof-range-checkbox form-check-input" data-min="40" data-max="80"/>
+												<label for="proof2" class="form-check-label">40 - 80</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="proof3" class="proof-range-checkbox form-check-input" data-min="80" data-max="100"/>
+												<label for="proof3" class="form-check-label">80 - 100</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="proof4" class="proof-range-checkbox form-check-input" data-min="100" data-max="120"/>
+												<label for="proof4" class="form-check-label">100 - 120</label>
+											</div>
+											<div class="mb-1 d-flex align-items-center gap-1">
+												<input type="checkbox" id="proof5" class="proof-range-checkbox form-check-input" data-min="120" data-max="Infinity"/>
+												<label for="proof5" class="form-check-label">120+</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
 								<!-- Age Range Filter -->
 								<div class="accordion-item">
 									<h2 class="accordion-header" id="headingAge">

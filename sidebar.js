@@ -2,12 +2,13 @@
 const filterState = {
   categories: [],
   types: [],
-  price: [],
+  price1oz: [],
+  pricehalfoz: [],
+  proof: [],
   age: [],
 };
 
 // --- Filter List Rendering for Categories & Types ---
-// Generic function to update a filter list (for categories or types)
 const updateFilterList = (
   container,
   searchInput,
@@ -39,13 +40,14 @@ const updateFilterList = (
     const id = prefix + "-" + item.replace(/\s+/g, "-").toLowerCase();
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
-    checkbox.classList.add(prefix + "-checkbox");
-    checkbox.classList.add("form-check-input");
+    checkbox.classList.add(prefix + "-checkbox", "form-check-input");
+    // For categories and types, data attribute is "data-cat" or "data-type"
+    // For our unified UI, we assume the prefix is used in the data attribute as well.
     checkbox.setAttribute("data-" + prefix, item);
     checkbox.id = id;
 
     const label = document.createElement("label");
-    label.classList.add('form-check-label')
+    label.classList.add("form-check-label");
     label.htmlFor = id;
     label.textContent = item;
 
@@ -113,21 +115,53 @@ document.getElementById("typeList").addEventListener("change", (e) => {
     }
   }
 });
-// Price Range (both desktop/mobile)
-document.querySelectorAll(".price-range-checkbox").forEach((chk) => {
+
+// Price 1 oz filtering
+document.querySelectorAll(".price-1oz-range-checkbox").forEach((chk) => {
   chk.addEventListener("change", () => {
     let selected = [];
-    document.querySelectorAll(".price-range-checkbox").forEach((cb) => {
+    document.querySelectorAll(".price-1oz-range-checkbox").forEach((cb) => {
       if (cb.checked) {
         const min = cb.getAttribute("data-min");
         const max = cb.getAttribute("data-max");
         selected.push(max === "Infinity" ? min + "+" : min + "-" + max);
       }
     });
-    filterState.price = selected;
+    filterState.price1oz = selected;
   });
 });
-// Age Range (both desktop/mobile)
+
+// Price Half oz filtering
+document.querySelectorAll(".price-halfoz-range-checkbox").forEach((chk) => {
+  chk.addEventListener("change", () => {
+    let selected = [];
+    document.querySelectorAll(".price-halfoz-range-checkbox").forEach((cb) => {
+      if (cb.checked) {
+        const min = cb.getAttribute("data-min");
+        const max = cb.getAttribute("data-max");
+        selected.push(max === "Infinity" ? min + "+" : min + "-" + max);
+      }
+    });
+    filterState.pricehalfoz = selected;
+  });
+});
+
+// Proof filtering
+document.querySelectorAll(".proof-range-checkbox").forEach((chk) => {
+  chk.addEventListener("change", () => {
+    let selected = [];
+    document.querySelectorAll(".proof-range-checkbox").forEach((cb) => {
+      if (cb.checked) {
+        const min = cb.getAttribute("data-min");
+        const max = cb.getAttribute("data-max");
+        selected.push(max === "Infinity" ? min + "+" : min + "-" + max);
+      }
+    });
+    filterState.proof = selected;
+  });
+});
+
+// Age Range filtering (remains unchanged)
 document.querySelectorAll(".age-range-checkbox").forEach((chk) => {
   chk.addEventListener("change", () => {
     let selected = [];
@@ -155,10 +189,20 @@ document.getElementById("applyFilters").addEventListener("click", () => {
   } else {
     url.searchParams.delete("types");
   }
-  if (filterState.price.length > 0) {
-    url.searchParams.set("price", filterState.price.join(","));
+  if (filterState.price1oz.length > 0) {
+    url.searchParams.set("price_1_oz", filterState.price1oz.join(","));
   } else {
-    url.searchParams.delete("price");
+    url.searchParams.delete("price_1_oz");
+  }
+  if (filterState.pricehalfoz.length > 0) {
+    url.searchParams.set("price_half_oz", filterState.pricehalfoz.join(","));
+  } else {
+    url.searchParams.delete("price_half_oz");
+  }
+  if (filterState.proof.length > 0) {
+    url.searchParams.set("proof", filterState.proof.join(","));
+  } else {
+    url.searchParams.delete("proof");
   }
   if (filterState.age.length > 0) {
     url.searchParams.set("age", filterState.age.join(","));
@@ -174,12 +218,14 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   // Reset global filterState
   filterState.categories = [];
   filterState.types = [];
-  filterState.price = [];
+  filterState.price1oz = [];
+  filterState.pricehalfoz = [];
+  filterState.proof = [];
   filterState.age = [];
   // Uncheck all filter checkboxes
   document
     .querySelectorAll(
-      "input.cat-checkbox, input.type-checkbox, input.price-range-checkbox, input.age-range-checkbox"
+      "input.cat-checkbox, input.type-checkbox, input.price-1oz-range-checkbox, input.price-halfoz-range-checkbox, input.proof-range-checkbox, input.age-range-checkbox"
     )
     .forEach((chk) => {
       chk.checked = false;
@@ -187,7 +233,9 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   const url = new URL(window.location.href);
   url.searchParams.delete("categories");
   url.searchParams.delete("types");
-  url.searchParams.delete("price");
+  url.searchParams.delete("price_1_oz");
+  url.searchParams.delete("price_half_oz");
+  url.searchParams.delete("proof");
   url.searchParams.delete("age");
   url.searchParams.set("page", "1");
   window.history.pushState(null, "", url.toString());
@@ -218,14 +266,14 @@ function updateCheckboxesFromUrl(
   });
 }
 
-// Formatter for price range checkboxes: formats as "min-max" or "min+"
+// Formatter for range checkboxes: formats as "min-max" or "min+"
 function priceFormatter(chk) {
   const min = chk.getAttribute("data-min");
   const max = chk.getAttribute("data-max");
   return max === "Infinity" ? min + "+" : min + "-" + max;
 }
 
-// Formatter for age range checkboxes: similar to price formatter
+// Formatter for age range checkboxes: similar to priceFormatter
 function ageFormatter(chk) {
   const min = chk.getAttribute("data-min");
   const max = chk.getAttribute("data-max");
@@ -256,8 +304,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCheckboxesFromUrl("categories", "cat-checkbox", "cat");
   updateCheckboxesFromUrl("types", "type-checkbox", "type");
   updateCheckboxesFromUrl(
-    "price",
-    "price-range-checkbox",
+    "price_1_oz",
+    "price-1oz-range-checkbox",
+    null,
+    priceFormatter
+  );
+  updateCheckboxesFromUrl(
+    "price_half_oz",
+    "price-halfoz-range-checkbox",
+    null,
+    priceFormatter
+  );
+  updateCheckboxesFromUrl(
+    "proof",
+    "proof-range-checkbox",
     null,
     priceFormatter
   );
