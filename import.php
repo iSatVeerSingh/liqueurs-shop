@@ -3,7 +3,7 @@
 $db = new PDO('sqlite:database.sqlite');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Create table if it doesn't exist
+// Create table if it doesn't exist with updated columns
 $db->exec("CREATE TABLE IF NOT EXISTS liqueurs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     distiller TEXT,
@@ -11,53 +11,30 @@ $db->exec("CREATE TABLE IF NOT EXISTS liqueurs (
     type TEXT,
     category TEXT,
     region TEXT,
-    value TEXT,
-    proof TEXT,
+    cost REAL,
+    proof REAL,
     age TEXT,
-    price_half_oz TEXT,
-    price_1_oz TEXT,
+    sub_region TEXT,
+    discontinued INTEGER,
+    price_half_oz REAL,
+    price_1_oz REAL,
     image TEXT,
     description TEXT,
     grade TEXT
 )");
 
-// Read JSON file
-$jsonData = file_get_contents('data.json');
-$items = json_decode($jsonData, true);
-if (!$items) {
-  die("Failed to decode JSON data.");
-}
+// Create indexes for filtering performance
+$db->exec("CREATE INDEX IF NOT EXISTS idx_category ON liqueurs(category)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_type ON liqueurs(type)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_region ON liqueurs(region)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_cost ON liqueurs(cost)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_proof ON liqueurs(proof)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_price_half ON liqueurs(price_half_oz)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_price_one ON liqueurs(price_1_oz)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_distiller ON liqueurs(distiller)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_bottle ON liqueurs(bottle)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_discontinued ON liqueurs(discontinued)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_sub_region ON liqueurs(sub_region)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_age ON liqueurs(age)");
 
-// Prepare SQL statement for insertion
-$stmt = $db->prepare("INSERT INTO liqueurs (
-    distiller, bottle, type, category, region, value, proof, age, price_half_oz, price_1_oz, image, description, grade
-) VALUES (
-    :distiller, :bottle, :type, :category, :region, :value, :proof, :age, :price_half_oz, :price_1_oz, :image, :description, :grade
-)");
-
-// Begin transaction for faster inserts
-$db->beginTransaction();
-
-foreach ($items as $item) {
-  // Map JSON keys to SQL parameters; note the transformation for the price field.
-  $stmt->execute([
-    ':distiller'     => $item['distiller'],
-    ':bottle'        => $item['bottle'],
-    ':type'          => $item['type'],
-    ':category'      => $item['category'],
-    ':region'        => $item['region'],
-    ':value'         => $item['value'],
-    ':proof'         => $item['proof'],
-    ':age'           => $item['age'],
-    ':price_half_oz' => $item['price_1/2_oz'], // transforming key name
-    ':price_1_oz'    => $item['price_1_oz'],
-    ':image'         => $item['image'],
-    ':description'   => $item['description'],
-    ':grade'         => $item['grade']
-  ]);
-}
-
-// Commit transaction
-$db->commit();
-
-echo "Data imported successfully.";
+echo "Database, table, and indexes created successfully.";
