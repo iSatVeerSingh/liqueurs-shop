@@ -56,11 +56,12 @@ function renderProducts(responseData) {
           <a href="/liqueurs/${item.id}" class="stretched-link"></a>
         </div>
         <div class="card-body">
+          <h6 class="text-muted">${item.distiller}</h6>
           <h5 class="card-title mb-2">${item.bottle}</h5>
           <p class="mb-2"><span class="text-danger fw-bold fs-5">\$${item.price_half_oz}</span><small class="text-muted"> per 1/2 oz</small></p>
           <p class="mb-2"><span class="fw-bold fs-6">\$${item.price_1_oz}</span><small class="text-muted"> per oz</small></p>
           <p class="mb-1 text-muted">
-            <small>${item.distiller} &bull; ${item.type} &bull; ${item.region}</small>
+            <small>${item.type} &bull; ${item.region}</small>
           </p>
           <p class="mb-3 text-muted">
             <small>Proof: ${item.proof} | Age: ${ageText}</small>
