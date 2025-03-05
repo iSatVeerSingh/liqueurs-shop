@@ -10,32 +10,19 @@
 			<div class="collapse navbar-collapse" id="mainnavbar">
 				<ul class="navbar-nav mx-auto gap-xl-5">
 					<li class="nav-item dropdown">
-						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+						<button class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							SPIRITS
 						</button>
 						<ul class="dropdown-menu">
 							{% for category, bottles in navbarData.spirits %}
-								<li class="dropend">
-									<button class="dropdown-item dropdown-toggle sub-dropdown-btn py-2">
-										{{ category|upper }}
-									</button>
-									<ul class="dropdown-menu">
-										<div class="px-3 fs-5 dropend-title border-bottom">Featured Brands</div>
-										{% for bottle in bottles %}
-											<li>
-												<a class="dropdown-item" href="/search?bottle={{ bottle }}">{{ bottle }}</a>
-											</li>
-										{% endfor %}
-										<div class="dropend-title border-top">
-											<a href="/search?categories={{ category }}" class="dropdown-item">See all brands</a>
-										</div>
-									</ul>
+								<li>
+									<a href="/search?categories={{ category }}" class="dropdown-item">{{ category }}</a>
 								</li>
 							{% endfor %}
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
-						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+						<button class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							DISTILLERY
 						</button>
 						<ul class="dropdown-menu">
@@ -47,7 +34,7 @@
 						</ul>
 					</li>
 					<li class="nav-item dropdown">
-						<button class="nav-link dropdown-toggle dropdown-btn" type="button" aria-expanded="false">
+						<button class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							REGION
 						</button>
 						<ul class="dropdown-menu">

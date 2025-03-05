@@ -26,6 +26,9 @@ body {
   color: var(--color-rust) !important;
 }
 
+.dropdown-toggle.show {
+  color: var(--color-rust) !important;
+}
 .dropdown-menu .dropdown-menu {
   left: 100%;
   top: 0;
@@ -35,11 +38,6 @@ body {
 .sub-dropdown-btn:hover {
   color: var(--color-rust) !important;
 }
-
-.dropdown-toggle.show {
-  color: var(--color-rust) !important;
-}
-
 .dropend-title {
   color: var(--color-eggplant);
   /* border-bottom: 1px solid var(--color-smoke); */
