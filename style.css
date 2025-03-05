@@ -38,6 +38,7 @@ body {
 .sub-dropdown-btn:hover {
   color: var(--color-rust) !important;
 }
+
 .dropend-title {
   color: var(--color-eggplant);
   /* border-bottom: 1px solid var(--color-smoke); */
@@ -117,6 +118,11 @@ body {
 
 i.bi {
   pointer-events: none;
+}
+
+.bi-card-checklist {
+  font-size: 24px;
+  color: white;
 }
 
 .product-image {
