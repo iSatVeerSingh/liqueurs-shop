@@ -230,7 +230,7 @@ document.getElementById("applyFilters").addEventListener("click", () => {
   }
   url.searchParams.set("page", "1");
   window.history.pushState(null, "", url.toString());
-  fetchLiqueursData();
+  fetchliquorsData();
 });
 
 document.getElementById("clearFilters").addEventListener("click", () => {
@@ -260,7 +260,7 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   url.searchParams.delete("age");
   url.searchParams.set("page", "1");
   window.history.pushState(null, "", url.toString());
-  fetchLiqueursData();
+  fetchliquorsData();
 });
 
 // --- Generic function for updating checkboxes based on URL parameters ---

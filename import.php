@@ -4,7 +4,7 @@ $db = new PDO('sqlite:database.sqlite');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Create table if it doesn't exist with updated columns
-$db->exec("CREATE TABLE IF NOT EXISTS liqueurs (
+$db->exec("CREATE TABLE IF NOT EXISTS liquors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     distiller TEXT,
     bottle TEXT,
@@ -24,17 +24,17 @@ $db->exec("CREATE TABLE IF NOT EXISTS liqueurs (
 )");
 
 // Create indexes for filtering performance
-$db->exec("CREATE INDEX IF NOT EXISTS idx_category ON liqueurs(category)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_type ON liqueurs(type)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_region ON liqueurs(region)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_cost ON liqueurs(cost)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_proof ON liqueurs(proof)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_price_half ON liqueurs(price_half_oz)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_price_one ON liqueurs(price_1_oz)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_distiller ON liqueurs(distiller)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_bottle ON liqueurs(bottle)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_discontinued ON liqueurs(discontinued)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_sub_region ON liqueurs(sub_region)");
-$db->exec("CREATE INDEX IF NOT EXISTS idx_age ON liqueurs(age)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_category ON liquors(category)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_type ON liquors(type)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_region ON liquors(region)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_cost ON liquors(cost)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_proof ON liquors(proof)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_price_half ON liquors(price_half_oz)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_price_one ON liquors(price_1_oz)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_distiller ON liquors(distiller)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_bottle ON liquors(bottle)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_discontinued ON liquors(discontinued)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_sub_region ON liquors(sub_region)");
+$db->exec("CREATE INDEX IF NOT EXISTS idx_age ON liquors(age)");
 
 echo "Database, table, and indexes created successfully.";

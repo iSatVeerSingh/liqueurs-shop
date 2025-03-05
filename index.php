@@ -35,28 +35,28 @@ $app->get('/search', function ($request, $response, $args) use ($twig) {
   return $twig->render($response, 'search.twig', ['navbarData' => $navbarData, 'sidebarData' => $sidebarData]);
 });
 
-$app->get('/liqueurs/{id}', function (Request $request, Response $response, $args) use ($twig) {
+$app->get('/liquors/{id}', function (Request $request, Response $response, $args) use ($twig) {
   $id = (int)$args['id'];
   $navbarData = getNavbarData();
   // Connect to SQLite
   $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // Fetch the liqueur by id
-  $stmt = $db->prepare("SELECT * FROM liqueurs WHERE id = :id");
+  // Fetch the liquor by id
+  $stmt = $db->prepare("SELECT * FROM liquors WHERE id = :id");
   $stmt->bindValue(':id', $id, PDO::PARAM_INT);
   $stmt->execute();
-  $liqueur = $stmt->fetch(PDO::FETCH_ASSOC);
+  $liquor = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  if (!$liqueur) {
+  if (!$liquor) {
     $data = ['error' => 'Product not found'];
     $response->getBody()->write(json_encode($data));
     return $response->withStatus(404)
       ->withHeader('Content-Type', 'application/json');
   }
 
-  return $twig->render($response, 'product.twig', ['navbarData' => $navbarData, 'product' => $liqueur]);
-  $response->getBody()->write(json_encode($liqueur));
+  return $twig->render($response, 'product.twig', ['navbarData' => $navbarData, 'product' => $liquor]);
+  $response->getBody()->write(json_encode($liquor));
   return $response->withHeader('Content-Type', 'application/json');
 });
 
@@ -69,7 +69,7 @@ $app->get('/contact', function ($request, $response, $args) use ($twig) {
 $app->get('/api', function (Request $request, Response $response, $args) {
   // Retrieve query parameters and set up pagination
   $params = $request->getQueryParams();
-  $payload = getFilteredLiqueurs($params);
+  $payload = getFilteredliquors($params);
 
   $response->getBody()->write(json_encode($payload));
   return $response->withHeader('Content-Type', 'application/json');
@@ -99,11 +99,11 @@ $app->post('/api/upload', function (Request $request, Response $response) {
     $db->beginTransaction();
 
     // Delete all existing records
-    $db->exec("DELETE FROM liqueurs");
+    $db->exec("DELETE FROM liquors");
 
     // Prepare SQL statement for insertion using new JSON keys
     $stmt = $db->prepare("
-          INSERT INTO liqueurs (
+          INSERT INTO liquors (
               distiller,
               bottle,
               type,

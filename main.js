@@ -10,7 +10,7 @@ function hideLoading() {
 }
 
 // Reusable async function that builds the API URL with query parameters from the current URL and fetches data
-async function fetchLiqueursData() {
+async function fetchliquorsData() {
   showLoading(); // Show the loading indicator before starting the fetch
   const baseUrl = "/api";
   const apiUrl = baseUrl + window.location.search; // Append query parameters from current URL
@@ -86,7 +86,7 @@ function renderProducts(responseData) {
       <div class="card product-card shadow-sm mb-4 p-3">
         <div class="position-relative">
           <img src="${item.image}" alt="${item.bottle}" class="img-fluid" />
-          <a href="/liqueurs/${item.id}" class="stretched-link"></a>
+          <a href="/liquors/${item.id}" class="stretched-link"></a>
         </div>
         <div class="card-body">
           <h6 class="text-muted">${item.distiller}</h6>
@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       url.searchParams.set("page", "1");
       window.history.pushState(null, "", url.toString());
-      fetchLiqueursData();
+      fetchliquorsData();
     });
 
-  await fetchLiqueursData();
+  await fetchliquorsData();
 });
