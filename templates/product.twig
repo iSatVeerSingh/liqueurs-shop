@@ -93,10 +93,10 @@
         <!-- Right Column: Product Details -->
         <div class="col-md-8">
           <h1 class="h4 mb-2">{{ product.bottle }}</h1>
-          <p class="fs-5 text-danger mb-4">{{ product.value }}</p>
+          <p class="fs-5 text-danger mb-4">&dollar;{{ product.cost }}</p>
           <ul class="list-unstyled product-meta mb-4">
             <li>
-              <strong>1oz:</strong> {{ product.price_1_oz }}
+              <strong>1oz:</strong> &dollar;{{ product.price_1_oz }}
             </li>
             <li>
               <strong>Age:</strong> {{ product.age != "NAS" ? (product.age == 1 ? "1 Year" : product.age ~ " Years") : "NAS" }}
