@@ -22,6 +22,12 @@ $app->get('/', function ($request, $response, $args) use ($twig) {
   return $twig->render($response, 'home.twig', ['navbarData' => $navbarData]);
 });
 
+$app->get('/wishlist', function ($request, $response, $args) use ($twig) {
+  $navbarData = getNavbarData();
+
+  return $twig->render($response, 'wishlist.twig', ['navbarData' => $navbarData]);
+});
+
 $app->get('/search', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
   $sidebarData = getSidebarData();
