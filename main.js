@@ -18,7 +18,6 @@ async function fetchLiqueursData() {
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
     const responseData = await response.json();
-    console.log(responseData);
     renderProducts(responseData);
   } catch (error) {
     console.error("Fetch error:", error);

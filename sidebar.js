@@ -2,13 +2,15 @@
 const filterState = {
   categories: [],
   types: [],
+  regions: [],
   price1oz: [],
   pricehalfoz: [],
   proof: [],
   age: [],
 };
 
-// --- Filter List Rendering for Categories & Types ---
+// --- Filter List Rendering for Categories, Types, and Regions ---
+// Generic function to update a filter list (for any list filter)
 const updateFilterList = (
   container,
   searchInput,
@@ -41,8 +43,7 @@ const updateFilterList = (
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add(prefix + "-checkbox", "form-check-input");
-    // For categories and types, data attribute is "data-cat" or "data-type"
-    // For our unified UI, we assume the prefix is used in the data attribute as well.
+    // Data attribute uses the prefix (e.g., data-cat, data-type, data-region)
     checkbox.setAttribute("data-" + prefix, item);
     checkbox.id = id;
 
@@ -115,6 +116,19 @@ document.getElementById("typeList").addEventListener("change", (e) => {
     }
   }
 });
+// Regions
+document.getElementById("regionList").addEventListener("change", (e) => {
+  if (e.target.classList.contains("region-checkbox")) {
+    const region = e.target.getAttribute("data-region");
+    if (e.target.checked) {
+      if (!filterState.regions.includes(region)) {
+        filterState.regions.push(region);
+      }
+    } else {
+      filterState.regions = filterState.regions.filter((r) => r !== region);
+    }
+  }
+});
 
 // Price 1 oz filtering
 document.querySelectorAll(".price-1oz-range-checkbox").forEach((chk) => {
@@ -161,7 +175,7 @@ document.querySelectorAll(".proof-range-checkbox").forEach((chk) => {
   });
 });
 
-// Age Range filtering (remains unchanged)
+// Age Range filtering
 document.querySelectorAll(".age-range-checkbox").forEach((chk) => {
   chk.addEventListener("change", () => {
     let selected = [];
@@ -188,6 +202,11 @@ document.getElementById("applyFilters").addEventListener("click", () => {
     url.searchParams.set("types", filterState.types.join(","));
   } else {
     url.searchParams.delete("types");
+  }
+  if (filterState.regions.length > 0) {
+    url.searchParams.set("region", filterState.regions.join(","));
+  } else {
+    url.searchParams.delete("region");
   }
   if (filterState.price1oz.length > 0) {
     url.searchParams.set("price_1_oz", filterState.price1oz.join(","));
@@ -218,6 +237,7 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   // Reset global filterState
   filterState.categories = [];
   filterState.types = [];
+  filterState.regions = [];
   filterState.price1oz = [];
   filterState.pricehalfoz = [];
   filterState.proof = [];
@@ -225,7 +245,7 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   // Uncheck all filter checkboxes
   document
     .querySelectorAll(
-      "input.cat-checkbox, input.type-checkbox, input.price-1oz-range-checkbox, input.price-halfoz-range-checkbox, input.proof-range-checkbox, input.age-range-checkbox"
+      "input.cat-checkbox, input.type-checkbox, input.region-checkbox, input.price-1oz-range-checkbox, input.price-halfoz-range-checkbox, input.proof-range-checkbox, input.age-range-checkbox"
     )
     .forEach((chk) => {
       chk.checked = false;
@@ -233,6 +253,7 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   const url = new URL(window.location.href);
   url.searchParams.delete("categories");
   url.searchParams.delete("types");
+  url.searchParams.delete("region");
   url.searchParams.delete("price_1_oz");
   url.searchParams.delete("price_half_oz");
   url.searchParams.delete("proof");
@@ -282,7 +303,7 @@ function ageFormatter(chk) {
 
 // --- Initial Setup on Page Load ---
 document.addEventListener("DOMContentLoaded", async () => {
-  // Setup filter UI for Categories & Types using unified IDs
+  // Setup filter UI for Categories & Types & Regions using unified IDs
   // Categories
   setupFilterUI(
     "categoryList",
@@ -299,10 +320,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     sidebarData.types,
     "type"
   );
+  // Regions
+  setupFilterUI(
+    "regionList",
+    "regionSearch",
+    "seeMoreRegion",
+    sidebarData.regions,
+    "region"
+  );
 
   // Update checkboxes from URL parameters (if filters already applied)
   updateCheckboxesFromUrl("categories", "cat-checkbox", "cat");
   updateCheckboxesFromUrl("types", "type-checkbox", "type");
+  updateCheckboxesFromUrl("region", "region-checkbox", "region");
   updateCheckboxesFromUrl(
     "price_1_oz",
     "price-1oz-range-checkbox",

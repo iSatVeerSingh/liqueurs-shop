@@ -413,7 +413,7 @@ function getNavbarData()
   return $navbarData;
 }
 
-function getUniqueCategoriesAndTypes()
+function getSidebarData()
 {
   // Establish PDO connection to SQLite database
   $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
@@ -427,8 +427,13 @@ function getUniqueCategoriesAndTypes()
   $stmt = $db->query("SELECT DISTINCT type FROM liqueurs");
   $types = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
+  // Query for unique regions
+  $stmt = $db->query("SELECT DISTINCT region FROM liqueurs");
+  $regions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
   return [
     'categories' => $categories,
     'types'      => $types,
+    'regions' => $regions
   ];
 }
