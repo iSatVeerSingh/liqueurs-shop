@@ -1,3 +1,8 @@
+SetEnv MYSQL_HOST "localhost"
+SetEnv MYSQL_DATABASE "badwenwu_liquors"
+SetEnv MYSQL_USERNAME "badwenwu_admin"
+SetEnv MYSQL_PASSWORD "iXDjskt^q17d"
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
