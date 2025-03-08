@@ -190,6 +190,68 @@ document.querySelectorAll(".age-range-checkbox").forEach((chk) => {
   });
 });
 
+// --- Generic function for updating checkboxes based on URL parameters and updating filterState ---
+function updateCheckboxesFromUrl(
+  paramName,
+  checkboxClass,
+  dataAttr,
+  formatter
+) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramValue = urlParams.get(paramName);
+  let selected = [];
+  if (paramValue) {
+    selected = paramValue.split(",").map((item) => item.trim());
+  }
+  // Update the corresponding filterState property based on paramName
+  switch (paramName) {
+    case "categories":
+      filterState.categories = selected;
+      break;
+    case "types":
+      filterState.types = selected;
+      break;
+    case "region":
+      filterState.regions = selected;
+      break;
+    case "price_1_oz":
+      filterState.price1oz = selected;
+      break;
+    case "price_half_oz":
+      filterState.pricehalfoz = selected;
+      break;
+    case "proof":
+      filterState.proof = selected;
+      break;
+    case "age":
+      filterState.age = selected;
+      break;
+  }
+  document.querySelectorAll(`.${checkboxClass}`).forEach((chk) => {
+    let value;
+    if (formatter && typeof formatter === "function") {
+      value = formatter(chk);
+    } else if (dataAttr) {
+      value = chk.getAttribute("data-" + dataAttr);
+    }
+    chk.checked = selected.includes(value);
+  });
+}
+
+// Formatter for range checkboxes: formats as "min-max" or "min+"
+function priceFormatter(chk) {
+  const min = chk.getAttribute("data-min");
+  const max = chk.getAttribute("data-max");
+  return max === "Infinity" ? min + "+" : min + "-" + max;
+}
+
+// Formatter for age range checkboxes: similar to priceFormatter
+function ageFormatter(chk) {
+  const min = chk.getAttribute("data-min");
+  const max = chk.getAttribute("data-max");
+  return max === "Infinity" ? min + "+" : min + "-" + max;
+}
+
 // --- Apply & Clear Filter Buttons (Unified for both Desktop and Mobile) ---
 document.getElementById("applyFilters").addEventListener("click", () => {
   const url = new URL(window.location.href);
@@ -263,44 +325,6 @@ document.getElementById("clearFilters").addEventListener("click", () => {
   fetchliquorsData();
 });
 
-// --- Generic function for updating checkboxes based on URL parameters ---
-function updateCheckboxesFromUrl(
-  paramName,
-  checkboxClass,
-  dataAttr,
-  formatter
-) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const paramValue = urlParams.get(paramName);
-  let selected = [];
-  if (paramValue) {
-    selected = paramValue.split(",").map((item) => item.trim());
-  }
-  document.querySelectorAll(`.${checkboxClass}`).forEach((chk) => {
-    let value;
-    if (formatter && typeof formatter === "function") {
-      value = formatter(chk);
-    } else if (dataAttr) {
-      value = chk.getAttribute("data-" + dataAttr);
-    }
-    chk.checked = selected.includes(value);
-  });
-}
-
-// Formatter for range checkboxes: formats as "min-max" or "min+"
-function priceFormatter(chk) {
-  const min = chk.getAttribute("data-min");
-  const max = chk.getAttribute("data-max");
-  return max === "Infinity" ? min + "+" : min + "-" + max;
-}
-
-// Formatter for age range checkboxes: similar to priceFormatter
-function ageFormatter(chk) {
-  const min = chk.getAttribute("data-min");
-  const max = chk.getAttribute("data-max");
-  return max === "Infinity" ? min + "+" : min + "-" + max;
-}
-
 // --- Initial Setup on Page Load ---
 document.addEventListener("DOMContentLoaded", async () => {
   // Setup filter UI for Categories & Types & Regions using unified IDs
@@ -329,7 +353,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     "region"
   );
 
-  // Update checkboxes from URL parameters (if filters already applied)
+  // Update checkboxes from URL parameters (if filters already applied) and update filterState
   updateCheckboxesFromUrl("categories", "cat-checkbox", "cat");
   updateCheckboxesFromUrl("types", "type-checkbox", "type");
   updateCheckboxesFromUrl("region", "region-checkbox", "region");
