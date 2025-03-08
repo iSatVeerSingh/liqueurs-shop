@@ -68,10 +68,10 @@ function getFilteredliquors($params)
     $query .= " AND distiller IN (" . implode(',', $placeholders) . ")";
   }
 
-  // Filter by bottle keyword search (case-insensitive)
-  if (!empty($params['bottle'])) {
-    $query .= " AND bottle LIKE :bottle";
-    $bindings[':bottle'] = '%' . trim($params['bottle']) . '%';
+  // Filter by keyword search on bottle or distiller (case-insensitive)
+  if (!empty($params['keyword'])) {
+    $query .= " AND (bottle LIKE :keyword OR distiller LIKE :keyword)";
+    $bindings[':keyword'] = '%' . trim($params['keyword']) . '%';
   }
 
   // Filter by price range on cost (numeric column)
@@ -175,6 +175,7 @@ function getFilteredliquors($params)
 
   return $results;
 }
+
 
 function getNavbarData()
 {
