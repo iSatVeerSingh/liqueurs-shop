@@ -1,10 +1,19 @@
 <?php
-// helpers.php
 
+$mysql_host     = getenv('MYSQL_HOST');
+$mysql_dbname   = getenv('MYSQL_DATABASE');
+$mysql_username = getenv('MYSQL_USERNAME');
+$mysql_password = getenv('MYSQL_PASSWORD');
+
+$dsn = "mysql:host=$mysql_host;dbname=$mysql_dbname;charset=utf8mb4";
+
+// Function to get filtered liquors from MySQL
 function getFilteredliquors($params)
 {
-  // Connect to the SQLite database
-  $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+  global $dsn, $mysql_username, $mysql_password;
+
+  // Connect to MySQL
+  $db = new PDO($dsn, $mysql_username, $mysql_password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Build the dynamic query for fetching data
@@ -130,12 +139,12 @@ function getFilteredliquors($params)
     $age = trim($params['age']);
     if (strpos($age, '-') !== false) {
       list($minAge, $maxAge) = explode('-', $age);
-      $query .= " AND age != 'NAS' AND CAST(age AS REAL) BETWEEN :age_min AND :age_max";
+      $query .= " AND age != 'NAS' AND CAST(age AS DECIMAL(10,2)) BETWEEN :age_min AND :age_max";
       $bindings[':age_min'] = (float)$minAge;
       $bindings[':age_max'] = (float)$maxAge;
     } elseif (substr($age, -1) === '+') {
       $minAge = rtrim($age, '+');
-      $query .= " AND age != 'NAS' AND CAST(age AS REAL) >= :age_min";
+      $query .= " AND age != 'NAS' AND CAST(age AS DECIMAL(10,2)) >= :age_min";
       $bindings[':age_min'] = (float)$minAge;
     }
   }
@@ -157,8 +166,6 @@ function getFilteredliquors($params)
   }
 
   // No pagination clause is appended
-
-  // Prepare and execute the main query
   $stmt = $db->prepare($query);
   foreach ($bindings as $key => $value) {
     $stmt->bindValue($key, $value);
@@ -171,8 +178,8 @@ function getFilteredliquors($params)
 
 function getNavbarData()
 {
-  // Connect to the SQLite database
-  $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+  global $dsn, $mysql_username, $mysql_password;
+  $db = new PDO($dsn, $mysql_username, $mysql_password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   $navbarData = [
@@ -186,11 +193,11 @@ function getNavbarData()
   $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
   foreach ($categories as $category) {
     $query = "SELECT bottle, COUNT(*) as cnt 
-                    FROM liquors 
-                    WHERE category = :category 
-                    GROUP BY bottle 
-                    ORDER BY cnt DESC 
-                    LIMIT 10";
+              FROM liquors 
+              WHERE category = :category 
+              GROUP BY bottle 
+              ORDER BY cnt DESC 
+              LIMIT 10";
     $stmtCategory = $db->prepare($query);
     $stmtCategory->bindValue(':category', $category);
     $stmtCategory->execute();
@@ -211,25 +218,22 @@ function getNavbarData()
 
 function getSidebarData()
 {
-  // Establish PDO connection to SQLite database
-  $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+  global $dsn, $mysql_username, $mysql_password;
+  $db = new PDO($dsn, $mysql_username, $mysql_password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // Query for unique categories
   $stmt = $db->query("SELECT DISTINCT category FROM liquors");
   $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-  // Query for unique types
   $stmt = $db->query("SELECT DISTINCT type FROM liquors");
   $types = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-  // Query for unique regions
   $stmt = $db->query("SELECT DISTINCT region FROM liquors");
   $regions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
   return [
     'categories' => $categories,
     'types'      => $types,
-    'regions' => $regions
+    'regions'    => $regions
   ];
 }

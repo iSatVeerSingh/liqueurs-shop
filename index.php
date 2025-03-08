@@ -15,31 +15,36 @@ $app = AppFactory::create();
 $twig = Twig::create(__DIR__ . '/templates', ['cache' => false]);
 $app->add(TwigMiddleware::create($app, $twig));
 
+$mysql_host     = getenv('MYSQL_HOST');
+$mysql_dbname   = getenv('MYSQL_DATABASE');
+$mysql_username = getenv('MYSQL_USERNAME');
+$mysql_password = getenv('MYSQL_PASSWORD');
+
+$dsn = "mysql:host=$mysql_host;dbname=$mysql_dbname;charset=utf8mb4";
+
 // Define a simple route
 $app->get('/', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
-
   return $twig->render($response, 'home.twig', ['navbarData' => $navbarData]);
 });
 
 $app->get('/wishlist', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
-
   return $twig->render($response, 'wishlist.twig', ['navbarData' => $navbarData]);
 });
 
 $app->get('/search', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
   $sidebarData = getSidebarData();
-
   return $twig->render($response, 'search.twig', ['navbarData' => $navbarData, 'sidebarData' => $sidebarData]);
 });
 
-$app->get('/liquors/{id}', function (Request $request, Response $response, $args) use ($twig) {
+$app->get('/liquors/{id}', function (Request $request, Response $response, $args) use ($twig, $dsn, $mysql_username, $mysql_password) {
   $id = (int)$args['id'];
   $navbarData = getNavbarData();
-  // Connect to SQLite
-  $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+
+  // Connect to MySQL
+  $db = new PDO($dsn, $mysql_username, $mysql_password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Fetch the liquor by id
@@ -56,28 +61,25 @@ $app->get('/liquors/{id}', function (Request $request, Response $response, $args
   }
 
   return $twig->render($response, 'product.twig', ['navbarData' => $navbarData, 'product' => $liquor]);
+  // (The following lines will not be executed)
   $response->getBody()->write(json_encode($liquor));
   return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->get('/contact', function ($request, $response, $args) use ($twig) {
   $navbarData = getNavbarData();
-
   return $twig->render($response, 'contact.twig', ['navbarData' => $navbarData]);
 });
 
 $app->get('/api', function (Request $request, Response $response, $args) {
-  // Retrieve query parameters and set up pagination
   $params = $request->getQueryParams();
   $payload = getFilteredliquors($params);
-
   $response->getBody()->write(json_encode($payload));
   return $response->withHeader('Content-Type', 'application/json');
 });
 
-
-// POST /api/import
-$app->post('/api/upload', function (Request $request, Response $response) {
+// POST /api/upload - Import endpoint using MySQL
+$app->post('/api/upload', function (Request $request, Response $response) use ($dsn, $mysql_username, $mysql_password) {
   try {
     // Read JSON from request body
     $jsonData = $request->getBody()->getContents();
@@ -91,8 +93,8 @@ $app->post('/api/upload', function (Request $request, Response $response) {
       throw new Exception("Invalid JSON format.");
     }
 
-    // Connect to SQLite
-    $db = new PDO('sqlite:' . __DIR__ . '/database.sqlite');
+    // Connect to MySQL
+    $db = new PDO($dsn, $mysql_username, $mysql_password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Begin transaction
@@ -138,7 +140,6 @@ $app->post('/api/upload', function (Request $request, Response $response) {
           )
       ");
 
-    // Insert each item
     foreach ($items as $item) {
       $stmt->execute([
         ':distiller'      => $item['distiller']      ?? null,
@@ -148,7 +149,6 @@ $app->post('/api/upload', function (Request $request, Response $response) {
         ':region'         => $item['region']         ?? null,
         ':cost'           => isset($item['cost']) ? (float)$item['cost'] : null,
         ':proof'          => isset($item['proof']) ? (float)$item['proof'] : null,
-        // Age may be a number or "NAS"
         ':age'            => $item['age']            ?? null,
         ':sub_region'     => $item['sub_region']     ?? '',
         ':discontinued'   => isset($item['discontinued']) ? ($item['discontinued'] ? 1 : 0) : 0,
@@ -177,13 +177,9 @@ $app->post('/api/upload', function (Request $request, Response $response) {
   }
 });
 
-
 $app->get('/{routes:.+}', function (Request $request, Response $response, $args) use ($twig) {
   $navbarData = getNavbarData();
-
   return $twig->render($response, '404.twig', ['navbarData' => $navbarData]);
 });
 
-
-// Run the app
 $app->run();
