@@ -16,8 +16,8 @@ function getFilteredliquors($params)
   $db = new PDO($dsn, $mysql_username, $mysql_password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-  // Build the dynamic query for fetching data
-  $query    = "SELECT * FROM liquors WHERE 1=1";
+  // Select specific columns excluding description
+  $query    = "SELECT id, distiller, bottle, type, category, region, cost, proof, age, sub_region, discontinued, price_half_oz, price_1_oz, image, grade FROM liquors WHERE 1=1";
   $bindings = [];
 
   // Filter by categories (OR within group)
@@ -68,7 +68,7 @@ function getFilteredliquors($params)
     $query .= " AND distiller IN (" . implode(',', $placeholders) . ")";
   }
 
-  // Filter by keyword search on bottle or distiller (case-insensitive)
+  // Filter by keyword search in bottle or distiller (case-insensitive)
   if (!empty($params['keyword'])) {
     $query .= " AND (bottle LIKE :keyword OR distiller LIKE :keyword)";
     $bindings[':keyword'] = '%' . trim($params['keyword']) . '%';
@@ -175,6 +175,7 @@ function getFilteredliquors($params)
 
   return $results;
 }
+
 
 
 function getNavbarData()
