@@ -6,6 +6,7 @@ composer.lock
 
 # Environment variables file
 .env
+.htaccess
 
 # SQLite database files (adjust if you want to track an initial seed)
 *.sqlite
